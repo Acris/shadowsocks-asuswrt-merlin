@@ -3,12 +3,10 @@
 SS_MERLIN_HOME=/opt/share/ss-merlin
 
 # Start if process not running
-stubby_pid=`pidof stubby`
-if [[ -z "$stubby_pid" ]]; then
-  stubby -C ${SS_MERLIN_HOME}/etc/stubby/stubby.yml -v 3 -g
+unbound_pid=`pidof unbound`
+if [[ -z "$unbound_pid" ]]; then
+  unbound -c ${SS_MERLIN_HOME}/etc/unbound/unbound.conf
 fi
-
-sleep 5
 
 ss_pid=`pidof ss-redir`
 if [[ -z "$ss_pid" ]]; then

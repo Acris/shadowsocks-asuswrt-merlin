@@ -41,7 +41,7 @@ install() {
   opkg install haveged
   /opt/etc/init.d/S02haveged start
 
-  opkg install stubby ipset iptables
+  opkg install unbound ipset iptables
 
   echo -e "$ansi_green Cloning shadowsocks-asuswrt-merlin... $ansi_std"
 
@@ -75,6 +75,10 @@ install() {
   if [[ ! -f /jffs/configs/dnsmasq.conf.add ]]; then
     touch /jffs/configs/dnsmasq.conf.add
   fi
+
+  set +e
+  # Remove default unbound start script
+  rm /opt/etc/init.d/S61unbound 2> /dev/null
 
   echo -e "$ansi_green"
   echo "   ______           __                        __       "

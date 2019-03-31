@@ -27,7 +27,7 @@ uninstall() {
   cru d upgrade-ss-merlin
 
   echo -e "$ansi_green Removing packages... $ansi_std"
-  opkg remove --autoremove stubby haveged
+  opkg remove --autoremove unbound haveged
 
   echo -e "$ansi_green Deleting system links... $ansi_std"
   rm /opt/bin/ss-merlin

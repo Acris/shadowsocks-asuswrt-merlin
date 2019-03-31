@@ -75,7 +75,7 @@ Thank you to the following awesome projects ❤️
 - [asuswrt-merlin.ng](https://github.com/RMerl/asuswrt-merlin.ng)
 - [Entware](https://github.com/Entware/Entware)
 - [asuswrt-merlin-transparent-proxy](https://github.com/zw963/asuswrt-merlin-transparent-proxy)
-- [stubby](https://github.com/getdnsapi/stubby)
+- [unbound](https://nlnetlabs.nl/projects/unbound/about/)
 - [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list)
 - [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 - And many more.
