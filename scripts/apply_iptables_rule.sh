@@ -56,7 +56,6 @@ iptables -t nat -A SHADOWSOCKS_TCP -p tcp -j REDIRECT --to-ports ${local_redir_p
 
 # Apply TCP rules
 iptables -t nat -A PREROUTING -p tcp -j SHADOWSOCKS_TCP
-iptables -t nat -A OUTPUT -p tcp -j SHADOWSOCKS_TCP
 
 # UDP rules
 modprobe xt_TPROXY
@@ -64,18 +63,11 @@ ip route add local default dev lo table 100
 ip rule add fwmark 1 lookup 100
 
 iptables -t mangle -N SHADOWSOCKS_UDP
-iptables -t mangle -N SHADOWSOCKS_UDP_MARK
-
 iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set CHINAIPS dst -j RETURN
 iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set CHINAIP dst -j RETURN
 iptables -t mangle -A SHADOWSOCKS_UDP -p udp -j TPROXY --on-port ${local_redir_port} --tproxy-mark 0x01/0x01
 
-iptables -t mangle -A SHADOWSOCKS_UDP_MARK -p udp -m set --match-set CHINAIPS dst -j RETURN
-iptables -t mangle -A SHADOWSOCKS_UDP_MARK -p udp -m set --match-set CHINAIP dst -j RETURN
-iptables -t mangle -A SHADOWSOCKS_UDP_MARK -p udp -j MARK --set-mark 1
-
 # Apply for udp
 iptables -t mangle -A PREROUTING -p udp -j SHADOWSOCKS_UDP
-iptables -t mangle -A OUTPUT -p udp -j SHADOWSOCKS_UDP_MARK
 
 echo "Apply iptables rule done."
