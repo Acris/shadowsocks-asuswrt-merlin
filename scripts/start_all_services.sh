@@ -12,3 +12,5 @@ ss_pid=`pidof ss-redir`
 if [[ -z "$ss_pid" ]]; then
   ss-redir -c ${SS_MERLIN_HOME}/etc/shadowsocks/config.json -f /opt/var/run/ss-redir.pid
 fi
+
+echo "All service started."

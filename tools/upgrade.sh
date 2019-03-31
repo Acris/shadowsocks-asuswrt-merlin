@@ -19,7 +19,7 @@ upgrade() {
     echo -e "$ansi_green Executing post upgrade scripts... $ansi_std"
     ${SS_MERLIN_HOME}/tools/post_upgrade.sh
 
-    echo -e "$ansi_green Upgrade packages... $ansi_std"
+    echo -e "$ansi_green Upgrading packages... $ansi_std"
     opkg update
     opkg upgrade
 

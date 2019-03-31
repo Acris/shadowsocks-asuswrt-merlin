@@ -2,8 +2,6 @@
 
 SS_MERLIN_HOME=/opt/share/ss-merlin
 
-echo "Apply ipset rule..."
-
 modprobe ip_set
 modprobe ip_set_hash_net
 modprobe ip_set_hash_ip
@@ -44,10 +42,6 @@ if ipset -N CHINAIP hash:ip 2> /dev/null; then
   fi
   IFS=${OLDIFS}
 fi
-
-echo "Apply ipset rule done."
-
-echo "Apply iptables rule..."
 
 local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'local_port' | cut -d ':' -f 2 | grep -o '[0-9]*')
 

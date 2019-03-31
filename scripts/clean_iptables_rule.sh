@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "Clean iptables rule..."
-
 # delete related rules
 iptables -t nat -D PREROUTING -p tcp -j SHADOWSOCKS_TCP 2> /dev/null
 iptables -t nat -F SHADOWSOCKS_TCP 2> /dev/null

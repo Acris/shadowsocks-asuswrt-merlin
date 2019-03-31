@@ -11,7 +11,6 @@ install() {
   SS_MERLIN_HOME=/opt/share/ss-merlin
 
   echo -e "$ansi_green Checking installation environment... $ansi_std"
-
   if ! git --version 2> /dev/null; then
     echo -e "$ansi_red Error: git is not installed, please install git first! $ansi_std"
     exit 1
@@ -34,17 +33,12 @@ install() {
   fi
 
   echo -e "$ansi_green Installing required packages... $ansi_std"
-
   opkg update
   opkg upgrade
-
-  opkg install haveged
+  opkg install haveged unbound ipset iptables
   /opt/etc/init.d/S02haveged start
 
-  opkg install unbound ipset iptables
-
   echo -e "$ansi_green Cloning shadowsocks-asuswrt-merlin... $ansi_std"
-
   git clone --depth=1 https://github.com/Acris/shadowsocks-asuswrt-merlin.git "$SS_MERLIN_HOME" || {
     echo -e "$ansi_red Error: git clone of shadowsocks-asuswrt-merlin repo failed. $ansi_std"
     exit 1
@@ -63,20 +57,6 @@ install() {
   ln -sf ${SS_MERLIN_HOME}/bin/ss-merlin /opt/bin/ss-merlin
   ln -sf ${SS_MERLIN_HOME}/bin/ss-redir /opt/bin/ss-redir
   ln -sf ${SS_MERLIN_HOME}/bin/v2ray-plugin /opt/bin/v2ray-plugin
-
-  echo -e "$ansi_green Creating post-mount task... $ansi_std"
-  if [[ ! -f /jffs/scripts/post-mount ]]; then
-    echo "#!/bin/sh" > /jffs/scripts/post-mount
-    chmod +x /jffs/scripts/post-mount
-  fi
-  echo "ss-merlin start" >> /jffs/scripts/post-mount
-
-  echo -e "$ansi_green Creating dhcpc-event task... $ansi_std"
-  if [[ ! -f /jffs/scripts/dhcpc-event ]]; then
-    echo "#!/bin/sh" > /jffs/scripts/dhcpc-event
-    chmod +x /jffs/scripts/dhcpc-event
-  fi
-  echo "${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh" >> /jffs/scripts/dhcpc-event
 
   echo -e "$ansi_green Creating dnsmasq config file... $ansi_std"
   if [[ ! -f /jffs/configs/dnsmasq.conf.add ]]; then

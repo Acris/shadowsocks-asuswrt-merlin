@@ -13,6 +13,8 @@ ansi_yellow="\033[1;33m";
 ansi_std="\033[m";
 
 stop_proxy() {
+  set -e
+
   echo -e "$ansi_green Stop shadowsocks-asuswrt-merlin... $ansi_std"
 
   if [[ ! -f /tmp/ss-merlin-is-run ]]; then
@@ -20,14 +22,21 @@ stop_proxy() {
     exit 1
   fi
 
-  cru d check-services-alive
+  echo -e "$ansi_green Deleting service check cron job... $ansi_std"
+  cru d check-services-alive 2> /dev/null
 
-  ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
+  echo -e "$ansi_green Removing user scripts... $ansi_std"
+  sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
+  sed -i "\#${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh#d" /jffs/scripts/dhcpc-event 2> /dev/null
 
+  echo -e "$ansi_green Cleaning iptables rules... $ansi_std"
   ${SS_MERLIN_HOME}/scripts/clean_iptables_rule.sh
 
-  sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add
+  echo -e "$ansi_green Stopping all services... $ansi_std"
+  ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
 
+  echo -e "$ansi_green Cleaning dnsmasq configuration file... $ansi_std"
+  sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2> /dev/null
   service restart_dnsmasq
 
   rm /tmp/ss-merlin-is-run
@@ -36,6 +45,8 @@ stop_proxy() {
 }
 
 start_proxy() {
+  set -e
+
   echo -e "$ansi_green Start shadowsocks-asuswrt-merlin... $ansi_std"
 
   if [[ -f /tmp/ss-merlin-is-run ]]; then
@@ -44,7 +55,6 @@ start_proxy() {
   fi
 
   echo "Initializing dnsmasq..."
-
   if [[ -d "$CONFIG_DIR" ]]; then
     default_dns_ip=127.0.0.1
 
@@ -81,25 +91,37 @@ start_proxy() {
     IFS=${OLDIFS}
   fi
 
-  echo "Updating dnsmasq config file..."
+  echo "Creating cron jobs..."
+  cru a check-services-alive "* * * * *" "$SS_MERLIN_HOME/scripts/start_all_services.sh"
+  cru a update-ip-whitelist "15 3 * * 0" "$SS_MERLIN_HOME/scripts/update_ip_whitelist.sh"
+  cru a update-dns-whitelist "15 4 * * 0" "$SS_MERLIN_HOME/scripts/update_dns_whitelist.sh"
+  cru a upgrade-ss-merlin "20 6 * * 0" "$SS_MERLIN_HOME/tools/upgrade.sh"
 
-  if ! grep -qs "^conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf$" /jffs/configs/dnsmasq.conf.add; then
-      echo "conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,*.conf" >> /jffs/configs/dnsmasq.conf.add
+  echo -e "$ansi_green Creating post-mount task... $ansi_std"
+  if [[ ! -f /jffs/scripts/post-mount ]]; then
+    echo "#!/bin/sh" > /jffs/scripts/post-mount
+    chmod +x /jffs/scripts/post-mount
   fi
+  echo "ss-merlin start" >> /jffs/scripts/post-mount
 
+  echo -e "$ansi_green Creating dhcpc-event task... $ansi_std"
+  if [[ ! -f /jffs/scripts/dhcpc-event ]]; then
+    echo "#!/bin/sh" > /jffs/scripts/dhcpc-event
+    chmod +x /jffs/scripts/dhcpc-event
+  fi
+  echo "${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh" >> /jffs/scripts/dhcpc-event
+
+  echo "Applying iptables rules..."
   ${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh
 
   echo "Starting all services..."
   ${SS_MERLIN_HOME}/scripts/start_all_services.sh
 
+  echo "Updating dnsmasq configuration file..."
+  if ! grep -qs "^conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf$" /jffs/configs/dnsmasq.conf.add; then
+      echo "conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,*.conf" >> /jffs/configs/dnsmasq.conf.add
+  fi
   service restart_dnsmasq
-
-  echo "Creating cron jobs..."
-
-  cru a check-services-alive "* * * * *" "$SS_MERLIN_HOME/scripts/start_all_services.sh"
-  cru a update-ip-whitelist "15 3 * * 0" "$SS_MERLIN_HOME/scripts/update_ip_whitelist.sh"
-  cru a update-dns-whitelist "15 4 * * 0" "$SS_MERLIN_HOME/scripts/update_dns_whitelist.sh"
-  cru a upgrade-ss-merlin "20 6 * * 0" "$SS_MERLIN_HOME/tools/upgrade.sh"
 
   touch /tmp/ss-merlin-is-run
 
