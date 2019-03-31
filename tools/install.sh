@@ -41,7 +41,6 @@ install() {
   opkg install haveged
   /opt/etc/init.d/S02haveged start
 
-  mkdir -p /opt/var/cache/stubby
   opkg install stubby ipset iptables
 
   echo -e "$ansi_green Cloning shadowsocks-asuswrt-merlin... $ansi_std"

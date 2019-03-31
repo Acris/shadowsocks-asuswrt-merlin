@@ -4,10 +4,9 @@ dns_transport_list:
 tls_authentication: GETDNS_AUTHENTICATION_REQUIRED
 tls_query_padding_blocksize: 128
 round_robin_upstreams: 1
-idle_timeout: 10000
+idle_timeout: 15000
 listen_addresses:
   - 127.0.0.1@15253
-appdata_dir: "/opt/var/cache/stubby"
 upstream_recursive_servers:
   # Rubyfish service
   - address_data: 118.89.110.78

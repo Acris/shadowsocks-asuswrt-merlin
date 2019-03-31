@@ -28,7 +28,6 @@ uninstall() {
 
   echo -e "$ansi_green Removing packages... $ansi_std"
   opkg remove --autoremove stubby haveged
-  rm -rf /opt/var/cache/stubby
 
   echo -e "$ansi_green Deleting system links... $ansi_std"
   rm /opt/bin/ss-merlin
