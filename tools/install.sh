@@ -71,6 +71,13 @@ install() {
   fi
   echo "ss-merlin start" >> /jffs/scripts/post-mount
 
+  echo -e "$ansi_green Creating dhcpc-event task... $ansi_std"
+  if [[ ! -f /jffs/scripts/dhcpc-event ]]; then
+    echo "#!/bin/sh" > /jffs/scripts/dhcpc-event
+    chmod +x /jffs/scripts/dhcpc-event
+  fi
+  echo "${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh" >> /jffs/scripts/dhcpc-event
+
   echo -e "$ansi_green Creating dnsmasq config file... $ansi_std"
   if [[ ! -f /jffs/configs/dnsmasq.conf.add ]]; then
     touch /jffs/configs/dnsmasq.conf.add

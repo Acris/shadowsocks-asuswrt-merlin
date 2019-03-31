@@ -41,7 +41,9 @@ uninstall() {
   echo -e "$ansi_green Deleting shadowsocks-ausuwrt-merlin... $ansi_std"
   rm -rf ${SS_MERLIN_HOME}
   rm /tmp/ss-merlin-is-run 2> /dev/null
+
   sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
+  sed -i "\#${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh#d" /jffs/scripts/dhcpc-event 2> /dev/null
 
   echo -e "$ansi_green Thanks for using shadowsocks-ausuwrt-merlin. It's been removed. $ansi_std"
 }
