@@ -12,12 +12,12 @@ install() {
 
   echo -e "$ansi_green Checking installation environment... $ansi_std"
 
-  if ! git --version > /dev/null 2>&1; then
+  if ! git --version 2> /dev/null; then
     echo -e "$ansi_red Error: git is not installed, please install git first! $ansi_std"
     exit 1
   fi
 
-  if ! opkg --version > /dev/null 2>&1; then
+  if ! opkg --version 2> /dev/null; then
     echo -e "$ansi_red Error: opkg is not found, please install Entware first! $ansi_std"
     exit 1
   fi
