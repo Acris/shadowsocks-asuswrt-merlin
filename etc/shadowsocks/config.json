@@ -1,0 +1,12 @@
+{
+  "server": "123.123.123.123",
+  "server_port": 8388,
+  "local_address": "192.168.1.1",
+  "local_port": 1080,
+  "password": "ChangeMe!!!",
+  "timeout": 600,
+  "method": "chacha20-ietf-poly1305",
+  "mode": "tcp_and_udp",
+  "plugin": "v2ray-plugin",
+  "plugin_opts": "tls;host=cloudfront.net;path=/v2ray"
+}

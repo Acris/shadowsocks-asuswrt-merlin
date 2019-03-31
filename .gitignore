@@ -1,0 +1,6 @@
+.idea
+etc/shadowsocks/
+etc/dnsmasq.d/
+!etc/dnsmasq.d/through_stubby.conf
+rules/
+!rules/localips

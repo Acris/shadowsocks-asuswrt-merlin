@@ -1,0 +1,16 @@
+resolution_type: GETDNS_RESOLUTION_STUB
+dns_transport_list:
+  - GETDNS_TRANSPORT_TLS
+tls_authentication: GETDNS_AUTHENTICATION_REQUIRED
+tls_query_padding_blocksize: 128
+round_robin_upstreams: 1
+idle_timeout: 10000
+listen_addresses:
+  - 127.0.0.1@15253
+appdata_dir: "/opt/var/cache/stubby"
+upstream_recursive_servers:
+  # Rubyfish service
+  - address_data: 118.89.110.78
+    tls_auth_name: "dns.rubyfish.cn"
+  - address_data: 47.99.165.31
+    tls_auth_name: "dns.rubyfish.cn"
