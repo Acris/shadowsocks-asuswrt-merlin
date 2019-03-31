@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 uninstall() {
   ansi_red="\033[1;31m"

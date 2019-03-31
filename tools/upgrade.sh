@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 upgrade() {
   SS_MERLIN_HOME=/opt/share/ss-merlin
@@ -17,7 +17,7 @@ upgrade() {
     chmod +x ${SS_MERLIN_HOME}/tools/*.sh
 
     echo -e "$ansi_green Executing post upgrade scripts... $ansi_std"
-    bash ${SS_MERLIN_HOME}/tools/post_upgrade.sh
+    ${SS_MERLIN_HOME}/tools/post_upgrade.sh
 
     echo -e "$ansi_green Upgrade packages... $ansi_std"
     opkg update

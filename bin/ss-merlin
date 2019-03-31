@@ -119,9 +119,9 @@ elif [[ "$1" == 'start' ]]; then
 elif [[ "$1" == 'restart' ]]; then
   restart_proxy
 elif [[ "$1" == 'upgrade' ]]; then
-  bash ${SS_MERLIN_HOME}/tools/upgrade.sh
+  ${SS_MERLIN_HOME}/tools/upgrade.sh
 elif [[ "$1" == 'uninstall' ]]; then
-  bash ${SS_MERLIN_HOME}/tools/uninstall.sh
+  ${SS_MERLIN_HOME}/tools/uninstall.sh
 else
   echo -e "$ansi_yellow Usage: ss-merlin start|stop|restart|upgrade|uninstall $ansi_std"
 fi

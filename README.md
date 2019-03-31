@@ -8,7 +8,6 @@ shadowsocks-asuswrt-merlin will install `shadowsocks-libev` and `v2ray-plugin` o
 - Asuswrt-Merlin New Gen(version 382.xx and higher) based router
 - Entware **must** be installed, you can find installation documents on [https://github.com/RMerl/asuswrt-merlin/wiki/Entware](https://github.com/RMerl/asuswrt-merlin/wiki/Entware)
 - JFFS partition should be enabled
-- bash should be installed
 - ca-certificates should be installed for HTTPS support
 - git and git-http should be installed
 - wget should be installed
@@ -17,13 +16,13 @@ Make sure you have installed all prerequisites software and utils, you can insta
 ```sh
 opkg update
 opkg upgrade
-opkg install bash ca-certificates git-http wget
+opkg install ca-certificates git-http wget
 ```
 
 ### Installing
 shadowsocks-asuswrt-merlin is installed by running the following commands in your terminal:
 ```sh
-bash -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/master/tools/install.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/master/tools/install.sh -O -)"
 ```
 
 ### Configuration
