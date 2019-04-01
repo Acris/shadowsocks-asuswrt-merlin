@@ -1,6 +1,6 @@
 # Shadowsocks for Asuswrt-Merlin New Gen
 
-shadowsocks-asuswrt-merlin will install `shadowsocks-libev` and `v2ray-plugin` on your Asuswrt-Merlin New Gen(version 382.xx and higher) based router.
+shadowsocks-asuswrt-merlin will install `shadowsocks-libev` and `v2ray-plugin` on your Asuswrt-Merlin New Gen(version 382.xx and higher) based router, tested on NETGEAR R7000 and ASUS RT-AC86U.
 
 For server side set up, you can easily install shadowsocks server and v2ray-plugin with docker by [https://github.com/Acris/docker-shadowsocks-libev](https://github.com/Acris/docker-shadowsocks-libev).
 
@@ -38,7 +38,7 @@ ss-merlin start
 
 ### Usage
 ```sh
-admin@NETGEARX:/tmp/home/root# ss-merlin 
+admin@R7000:/tmp/home/root# ss-merlin 
  Usage: ss-merlin start|stop|restart|upgrade|uninstall
 ```
 
