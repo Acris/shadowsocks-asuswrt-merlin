@@ -102,14 +102,18 @@ start_proxy() {
     echo "#!/bin/sh" > /jffs/scripts/post-mount
     chmod +x /jffs/scripts/post-mount
   fi
-  echo "ss-merlin start" >> /jffs/scripts/post-mount
+  if ! grep -qs "^ss-merlin start$" /jffs/scripts/post-mount; then
+    echo "ss-merlin start" >> /jffs/scripts/post-mount
+  fi
 
   echo -e "$ansi_green Creating dhcpc-event task... $ansi_std"
   if [[ ! -f /jffs/scripts/dhcpc-event ]]; then
     echo "#!/bin/sh" > /jffs/scripts/dhcpc-event
     chmod +x /jffs/scripts/dhcpc-event
   fi
-  echo "${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh" >> /jffs/scripts/dhcpc-event
+  if ! grep -qs "^${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh$" /jffs/scripts/dhcpc-event; then
+    echo "${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh" >> /jffs/scripts/dhcpc-event
+  fi
 
   echo "Applying iptables rules..."
   ${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh
