@@ -29,26 +29,17 @@ sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin
 
 ### Configuration
 ```sh
-# Edit the configuration file
+# Edit the shadowsocks configuration file
 vi /opt/share/ss-merlin/etc/shadowsocks/config.json
 
 # Start the service
 ss-merlin start
 ```
 
-### Restart
+### Usage
 ```sh
-ss-merlin restart
-```
-
-### Upgrade
-```sh
-ss-merlin upgrade
-```
-
-### Uninstall
-```sh
-ss-merlin uninstall
+admin@NETGEARX:/tmp/home/root# ss-merlin 
+ Usage: ss-merlin start|stop|restart|upgrade|uninstall
 ```
 
 ### Custom user rules
@@ -70,7 +61,7 @@ ss-merlin restart
 ```
 
 ## Credits
-Thank you to the following awesome projects ❤️
+Thanks for the following awesome projects ❤️
 - [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
 - [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)
 - [asuswrt-merlin.ng](https://github.com/RMerl/asuswrt-merlin.ng)
