@@ -23,8 +23,10 @@ upgrade() {
     opkg update
     opkg upgrade
 
-    echo -e "$ansi_green Restarting... $ansi_std"
-    ss-merlin restart
+    if [[ -f /tmp/ss-merlin-is-run ]]; then
+      echo -e "$ansi_green Restarting... $ansi_std"
+      ss-merlin restart
+    fi
 
     echo -e "$ansi_green"
     echo "   ______           __                        __       ";
