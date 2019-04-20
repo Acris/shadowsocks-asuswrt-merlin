@@ -12,15 +12,15 @@ modprobe xt_set
 
 if [[ ${mode} -eq 0 ]]; then
   # Add GFW list to gfwlist ipset for GFW list mode
-  if ipset -N gfwlist hash:ip 2> /dev/null; then
+  if ipset create gfwlist hash:ip 2> /dev/null; then
     cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
   fi
 elif [[ ${mode} -eq 1 ]]; then
   # Add China IP to chinaips ipset for Bypass LAN & mainland China mode
-  if ipset -N chinaips hash:net 2> /dev/null; then
+  if ipset create chinaips hash:net 2> /dev/null; then
     OLDIFS="$IFS" && IFS=$'\n'
-    if ipset -L chinaips &> /dev/null; then
-      count=$(ipset -L chinaips | wc -l)
+    if ipset list chinaips &> /dev/null; then
+      count=$(ipset list chinaips | wc -l)
       if [[ "$count" -lt "8000" ]]; then
         echo "Applying China ipset rule, it maybe take several minute to finish..."
 
@@ -39,10 +39,10 @@ elif [[ ${mode} -eq 1 ]]; then
 fi
 
 # Add user_ip_whitelist.txt
-if ipset -N whitelist hash:ip 2> /dev/null; then
+if ipset create whitelist hash:ip 2> /dev/null; then
   remote_server_ip=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
   OLDIFS="$IFS" && IFS=$'\n'
-  if ipset -L whitelist; then
+  if ipset list whitelist &> /dev/null; then
     # Add shadowsocks server ip address
     ipset add whitelist ${remote_server_ip}
 
