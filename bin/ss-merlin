@@ -2,10 +2,10 @@
 
 SS_MERLIN_HOME=/opt/share/ss-merlin
 
-CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
-ACCELERATED_CONFIG=${CONFIG_DIR}/accelerated-domains.china.conf
-GOOGLE_CONFIG=${CONFIG_DIR}/google.china.conf
-APPLE_CONFIG=${CONFIG_DIR}/apple.china.conf
+DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
+ACCELERATED_CONFIG=${DNSMASQ_CONFIG_DIR}/accelerated-domains.china.conf
+GOOGLE_CONFIG=${DNSMASQ_CONFIG_DIR}/google.china.conf
+APPLE_CONFIG=${DNSMASQ_CONFIG_DIR}/apple.china.conf
 
 ansi_red="\033[1;31m";
 ansi_green="\033[1;32m";
@@ -56,7 +56,7 @@ start_proxy() {
   fi
 
   echo "Initializing dnsmasq..."
-  if [[ -d "$CONFIG_DIR" ]]; then
+  if [[ -d "$DNSMASQ_CONFIG_DIR" ]]; then
     default_dns_ip=127.0.0.1
 
     sed "s#114\.114\.114\.114#${default_dns_ip}#" ${ACCELERATED_CONFIG}.bak > ${ACCELERATED_CONFIG}
@@ -69,16 +69,16 @@ start_proxy() {
 
     OLDIFS="$IFS" && IFS=$'\n'
     if [[ -f ${user_domain_name_whitelist} ]]; then
-      rm -f ${CONFIG_DIR}/whitelist-domains.china.conf
+      rm -f ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
       for i in $(cat ${user_domain_name_whitelist} | grep -v '^#'); do
-        echo "server=/${i}/${default_dns_ip}" >> ${CONFIG_DIR}/whitelist-domains.china.conf
+        echo "server=/${i}/${default_dns_ip}" >> ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
       done
     fi
 
     if [[ -f ${user_domain_name_blocklist} ]]; then
-      rm -f ${CONFIG_DIR}/blacklist-domains.china.conf
+      rm -f ${DNSMASQ_CONFIG_DIR}/blacklist-domains.china.conf
       for i in $(cat ${user_domain_name_blocklist} | grep -v '^#'); do
-        echo "address=/${i}/127.0.0.1" >> ${CONFIG_DIR}/blocklist-domains.china.conf
+        echo "address=/${i}/127.0.0.1" >> ${DNSMASQ_CONFIG_DIR}/blocklist-domains.china.conf
       done
     fi
 
