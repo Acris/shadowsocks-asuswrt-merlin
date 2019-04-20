@@ -40,6 +40,7 @@ For configuration file documents, you can go to: [https://github.com/shadowsocks
 # Edit the shadowsocks configuration file
 vi /opt/share/ss-merlin/etc/shadowsocks/config.json
 ```
+
 #### Configure shadowsocks-asuswrt-merlin
 The shadowsocks-asuswrt-merlin configuration file location is: `/opt/share/ss-merlin/etc/ss-merlin.conf`. Currently, shadowsocks-asuswrt-merlin support three mode:
 - 0: GFW list.
