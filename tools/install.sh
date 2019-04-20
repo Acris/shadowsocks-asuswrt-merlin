@@ -68,7 +68,7 @@ install() {
 
   set +e
   # Remove default unbound start script
-  rm /opt/etc/init.d/S61unbound 2> /dev/null
+  rm -f /opt/etc/init.d/S61unbound 2> /dev/null
 
   echo -e "$ansi_green"
   echo "   ______           __                        __       "

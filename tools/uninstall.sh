@@ -30,9 +30,9 @@ uninstall() {
   opkg remove --autoremove unbound haveged
 
   echo -e "$ansi_green Deleting system links... $ansi_std"
-  rm /opt/bin/ss-merlin
-  rm /opt/bin/ss-redir
-  rm /opt/bin/v2ray-plugin
+  rm -f /opt/bin/ss-merlin
+  rm -f /opt/bin/ss-redir
+  rm -f /opt/bin/v2ray-plugin
 
   echo -e "$ansi_green Cleaning dnsmasq configuration file... $ansi_std"
   sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2> /dev/null
@@ -44,7 +44,7 @@ uninstall() {
 
   echo -e "$ansi_green Deleting shadowsocks-ausuwrt-merlin... $ansi_std"
   rm -rf ${SS_MERLIN_HOME}
-  rm /tmp/ss-merlin-is-run 2> /dev/null
+  rm -f /tmp/ss-merlin-is-run 2> /dev/null
 
   echo -e "$ansi_green Thanks for using shadowsocks-ausuwrt-merlin. It's been removed. $ansi_std"
 }
