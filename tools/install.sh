@@ -53,6 +53,9 @@ install() {
   ${SS_MERLIN_HOME}/scripts/update_ip_whitelist.sh
   ${SS_MERLIN_HOME}/scripts/update_dns_whitelist.sh
 
+  echo -e "$ansi_green Updating GFW list... $ansi_std"
+  ${SS_MERLIN_HOME}/scripts/update_gfwlist.sh
+
   echo -e "$ansi_green Creating system links... $ansi_std"
   ln -sf ${SS_MERLIN_HOME}/bin/ss-merlin /opt/bin/ss-merlin
   ln -sf ${SS_MERLIN_HOME}/bin/ss-redir /opt/bin/ss-redir
@@ -75,6 +78,7 @@ install() {
   echo "                                   ...is now installed!"
   echo -e "$ansi_std"
   echo -e "$ansi_yellow Edit your shadowsocks configuration file at: /opt/share/ss-merlin/etc/shadowsocks/config.json $ansi_std"
+  echo -e "$ansi_yellow and shadowsocks-asuswrt-merlin configuration file at: /opt/share/ss-merlin/etc/ss-merlin.conf $ansi_std"
   echo "Type ss-merlin to get all supported arguments."
   echo "Get more details and give us a feedback at https://github.com/Acris/shadowsocks-asuswrt-merlin."
 }
