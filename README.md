@@ -32,6 +32,9 @@ sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin
 # Edit the shadowsocks configuration file
 vi /opt/share/ss-merlin/etc/shadowsocks/config.json
 
+# Edit the shadowsocks-asuswrt-merlin configuration file
+vi /opt/share/ss-merlin/etc/ss-merlin.conf
+
 # Start the service
 ss-merlin start
 ```
@@ -69,6 +72,8 @@ Thanks for the following awesome projects ❤️
 - [asuswrt-merlin-transparent-proxy](https://github.com/zw963/asuswrt-merlin-transparent-proxy)
 - [unbound](https://nlnetlabs.nl/projects/unbound/about/)
 - [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list)
+- [gfwlist](https://github.com/gfwlist/gfwlist)
+- [gfwlist2dnsmasq](https://github.com/cokebar/gfwlist2dnsmasq)
 - [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 - And many more.
 
