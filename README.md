@@ -30,9 +30,20 @@ sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin
 ### Configuration
 ```sh
 # Edit the shadowsocks configuration file
+## Ensure `local_address` is your router's IP address.
+## We highly recommend enable v2ray-plugin on your server side.
+## You can set up your server in several command with:
+## https://github.com/Acris/docker-shadowsocks-libev
+
 vi /opt/share/ss-merlin/etc/shadowsocks/config.json
 
 # Edit the shadowsocks-asuswrt-merlin configuration file
+## Currently, shadowsocks-asuswrt-merlin support three mode:
+## 0: GFW list. 1: Bypass LAN & mainland China. 2: Global mode.
+## You can also enable or disable UDP support to change `udp=0` or `udp=1`.
+## Ensure your server side support UDP and set `"mode": "tcp_and_udp"`
+## in /opt/share/ss-merlin/etc/shadowsocks/config.json if you want to enable UDP support.
+
 vi /opt/share/ss-merlin/etc/ss-merlin.conf
 
 # Start the service
