@@ -13,7 +13,8 @@ ip route del local default dev lo table 100 2> /dev/null
 ip rule del fwmark 1 lookup 100 2> /dev/null
 
 # Destory ipset
-ipset destroy CHINAIP 2> /dev/null
-ipset destroy CHINAIPS 2> /dev/null
+ipset destroy chinaip 2> /dev/null
+ipset destroy chinaips 2> /dev/null
+ipset destroy gfwlist 2> /dev/null
 
 echo "Clean iptables rule done."
