@@ -28,22 +28,32 @@ sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin
 ```
 
 ### Configuration
+#### Configure shadowsocks
+The shadowsocks configuration file location is: `/opt/share/ss-merlin/etc/shadowsocks/config.json`, ensure `local_address` is your router's IP address.
+
+We highly recommend to enable `v2ray-plugin` on your server side. You can set up your server in several command with: [https://github.com/Acris/docker-shadowsocks-libev](https://github.com/Acris/docker-shadowsocks-libev).
+
+If you want to enable support, you should set `mode` from `tcp_only` to `tcp_and_udp`.
+
+For configuration file documents, you can go to: [https://github.com/shadowsocks/shadowsocks-libev/blob/master/doc/shadowsocks-libev.asciidoc#config-file](https://github.com/shadowsocks/shadowsocks-libev/blob/master/doc/shadowsocks-libev.asciidoc#config-file)
 ```sh
 # Edit the shadowsocks configuration file
-## Ensure `local_address` is your router's IP address.
-## We highly recommend enable v2ray-plugin on your server side.
-## You can set up your server in several command with:
-## https://github.com/Acris/docker-shadowsocks-libev
 vi /opt/share/ss-merlin/etc/shadowsocks/config.json
+```
+#### Configure shadowsocks-asuswrt-merlin
+The shadowsocks-asuswrt-merlin configuration file location is: `/opt/share/ss-merlin/etc/ss-merlin.conf`. Currently, shadowsocks-asuswrt-merlin support three mode:
+- 0: GFW list.
+- 1: Bypass LAN & mainland China.
+- 2: Global mode.
 
+You can also enable or disable UDP support to change `udp=0` or `udp=1`, ensure your server side support UDP and set `"mode": "tcp_and_udp"` in shadowsocks configuration file.
+```sh
 # Edit the shadowsocks-asuswrt-merlin configuration file
-## Currently, shadowsocks-asuswrt-merlin support three mode:
-## 0: GFW list. 1: Bypass LAN & mainland China. 2: Global mode.
-## You can also enable or disable UDP support to change `udp=0` or `udp=1`.
-## Ensure your server side support UDP and set `"mode": "tcp_and_udp"`
-## in /opt/share/ss-merlin/etc/shadowsocks/config.json if you want to enable UDP support.
 vi /opt/share/ss-merlin/etc/ss-merlin.conf
+```
 
+Then, start the service:
+```sh
 # Start the service
 ss-merlin start
 ```
@@ -57,18 +67,22 @@ admin@R7000:/tmp/home/root# ss-merlin
 ### Custom user rules
 ```
 # Block domain
+## Add domain to this file if you want to block it.
 vi /opt/share/ss-merlin/rules/user_domain_name_blocklist.txt
 
 # Force pass proxy
+## You can add domain to this file if you want to force the domain pass proxy.
 vi /opt/share/ss-merlin/rules/user_domain_name_gfwlist.txt
 
 # Domain whitelist
+## You can add domain to this file if you need the domain bypass proxy.
 vi /opt/share/ss-merlin/rules/user_domain_name_whitelist.txt
 
 # IP whitelist
+## You can add IP address to this file if you need the IP bypass proxy.
 vi /opt/share/ss-merlin/rules/user_ip_whitelist.txt
 
-# Restart service
+# Then, restart the service
 ss-merlin restart
 ```
 
