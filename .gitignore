@@ -1,6 +1,6 @@
 .idea
 etc/shadowsocks/
 etc/dnsmasq.d/
-!etc/dnsmasq.d/through_stubby.conf
+!etc/dnsmasq.d/through_unbound.conf
 rules/
 !rules/localips
