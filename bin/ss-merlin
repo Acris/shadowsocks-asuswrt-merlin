@@ -37,6 +37,9 @@ stop_proxy() {
   ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
 
   echo -e "$ansi_green Cleaning dnsmasq configuration file... $ansi_std"
+  # Delete GFW list
+  rm ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf 2> /dev/null
+
   sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2> /dev/null
   service restart_dnsmasq
 

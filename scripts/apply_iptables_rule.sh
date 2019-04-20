@@ -1,42 +1,55 @@
 #!/bin/sh
 
 SS_MERLIN_HOME=/opt/share/ss-merlin
+DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
+
+. ${SS_MERLIN_HOME}/etc/ss-merlin.conf
 
 modprobe ip_set
 modprobe ip_set_hash_net
 modprobe ip_set_hash_ip
 modprobe xt_set
 
-if ipset -N CHINAIPS hash:net 2> /dev/null; then
-  OLDIFS="$IFS" && IFS=$'\n'
-  if ipset -L CHINAIPS &> /dev/null; then
-    count=$(ipset -L CHINAIPS | wc -l)
-    if [[ "$count" -lt "8000" ]]; then
-      echo "Applying China ipset rule, it maybe take several minute to finish..."
-
-      for ip in $(cat ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt | grep -v '^#'); do
-        ipset add CHINAIPS ${ip}
-      done
-
-      for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
-        ipset add CHINAIPS ${ip}
-      done
-    fi
+if [[ ${mode} -eq 0 ]]; then
+  # Add GFW list to gfwlist ipset for GFW list mode
+  if ipset -N gfwlist hash:ip 2> /dev/null; then
+    cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
   fi
-  IFS=${OLDIFS}
+elif [[ ${mode} -eq 1 ]]; then
+  # Add China IP to chinaips ipset for Bypass LAN & mainland China mode
+  if ipset -N chinaips hash:net 2> /dev/null; then
+    OLDIFS="$IFS" && IFS=$'\n'
+    if ipset -L chinaips &> /dev/null; then
+      count=$(ipset -L chinaips | wc -l)
+      if [[ "$count" -lt "8000" ]]; then
+        echo "Applying China ipset rule, it maybe take several minute to finish..."
+
+        for ip in $(cat ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt | grep -v '^#'); do
+          ipset add chinaips ${ip}
+        done
+
+        for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
+          ipset add chinaips ${ip}
+        done
+
+      fi
+    fi
+    IFS=${OLDIFS}
+  fi
 fi
 
-if ipset -N CHINAIP hash:ip 2> /dev/null; then
+# Add user_ip_whitelist.txt
+if ipset -N whitelist hash:ip 2> /dev/null; then
   remote_server_ip=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
   OLDIFS="$IFS" && IFS=$'\n'
-  if ipset -L CHINAIP; then
-    ipset add CHINAIP 202.12.29.205 # ftp.apnic.net
-    ipset add CHINAIP ${remote_server_ip} # vps ip address
+  if ipset -L whitelist; then
+    # Add shadowsocks server ip address
+    ipset add whitelist ${remote_server_ip}
 
-    # user_ip_whitelist.txt
+    # Add user_ip_whitelist.txt
     if [[ -e ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt ]]; then
       for ip in $(cat ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt | grep -v '^#'); do
-        ipset add CHINAIP ${ip}
+        ipset add whitelist ${ip}
       done
     fi
   fi
@@ -47,26 +60,44 @@ local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'loc
 
 if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
   # TCP rules
-  iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set CHINAIP dst -j RETURN
-  iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set CHINAIPS dst -j RETURN
-  iptables -t nat -A SHADOWSOCKS_TCP -p tcp -j REDIRECT --to-ports ${local_redir_port}
+  iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set whitelist dst -j RETURN
+
+  if [[ ${mode} -eq 1 ]]; then
+    iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set chinaips dst -j RETURN
+  fi
+
+  if [[ ${mode} -eq 0 ]]; then
+    iptables -t nat -A SHADOWSOCKS_TCP -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-ports ${local_redir_port}
+  else
+    iptables -t nat -A SHADOWSOCKS_TCP -p tcp -j REDIRECT --to-ports ${local_redir_port}
+  fi
 
   # Apply TCP rules
   iptables -t nat -A PREROUTING -p tcp -j SHADOWSOCKS_TCP
 fi
 
-if iptables -t mangle -N SHADOWSOCKS_UDP 2> /dev/null; then
-  # UDP rules
-  modprobe xt_TPROXY
-  ip route add local default dev lo table 100
-  ip rule add fwmark 1 lookup 100
+if [[ ${udp} -eq 1 ]]; then
+  if iptables -t mangle -N SHADOWSOCKS_UDP 2> /dev/null; then
+    # UDP rules
+    modprobe xt_TPROXY
+    ip route add local default dev lo table 100
+    ip rule add fwmark 1 lookup 100
 
-  iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set CHINAIPS dst -j RETURN
-  iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set CHINAIP dst -j RETURN
-  iptables -t mangle -A SHADOWSOCKS_UDP -p udp -j TPROXY --on-port ${local_redir_port} --tproxy-mark 0x01/0x01
+    iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set whitelist dst -j RETURN
 
-  # Apply for udp
-  iptables -t mangle -A PREROUTING -p udp -j SHADOWSOCKS_UDP
+    if [[ ${mode} -eq 1 ]]; then
+      iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set chinaips dst -j RETURN
+    fi
+
+    if [[ ${mode} -eq 0 ]]; then
+      iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set gfwlist dst -j TPROXY --on-port ${local_redir_port} --tproxy-mark 0x01/0x01
+    else
+      iptables -t mangle -A SHADOWSOCKS_UDP -p udp -j TPROXY --on-port ${local_redir_port} --tproxy-mark 0x01/0x01
+    fi
+
+    # Apply for udp
+    iptables -t mangle -A PREROUTING -p udp -j SHADOWSOCKS_UDP
+  fi
 fi
 
 echo "Apply iptables rule done."
