@@ -6,7 +6,7 @@
   "password": "ChangeMe!!!",
   "timeout": 600,
   "method": "chacha20-ietf-poly1305",
-  "mode": "tcp_and_udp",
+  "mode": "tcp_only",
   "plugin": "v2ray-plugin",
   "plugin_opts": "tls;host=cloudfront.net;path=/v2ray"
 }
