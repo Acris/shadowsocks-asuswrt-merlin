@@ -24,11 +24,11 @@ stop_proxy() {
 
   echo -e "$ansi_green Deleting service check and upgrade cron job... $ansi_std"
   cru d check-services-alive 2> /dev/null
+  cru d check-iptables-rule 2> /dev/null
   cru d upgrade-ss-merlin 2> /dev/null
 
   echo -e "$ansi_green Removing user scripts... $ansi_std"
   sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
-  sed -i "\#${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh#d" /jffs/scripts/dhcpc-event 2> /dev/null
 
   echo -e "$ansi_green Cleaning iptables rules... $ansi_std"
   ${SS_MERLIN_HOME}/scripts/clean_iptables_rule.sh
@@ -97,6 +97,7 @@ start_proxy() {
 
   echo "Creating cron jobs..."
   cru a check-services-alive "* * * * *" "$SS_MERLIN_HOME/scripts/start_all_services.sh"
+  cru a check-iptables-rule "*/5 * * * *" "$SS_MERLIN_HOME/scripts/apply_iptables_rule.sh"
   cru a update-ip-whitelist "15 2 * * 0" "$SS_MERLIN_HOME/scripts/update_ip_whitelist.sh"
   cru a update-dns-whitelist "15 3 * * 0" "$SS_MERLIN_HOME/scripts/update_dns_whitelist.sh"
   cru a update-gfwlist "15 4 * * 0" "$SS_MERLIN_HOME/scripts/update_gfwlist.sh"
@@ -109,15 +110,6 @@ start_proxy() {
   fi
   if ! grep -qs "^ss-merlin start$" /jffs/scripts/post-mount; then
     echo "ss-merlin start" >> /jffs/scripts/post-mount
-  fi
-
-  echo -e "$ansi_green Creating dhcpc-event task... $ansi_std"
-  if [[ ! -f /jffs/scripts/dhcpc-event ]]; then
-    echo "#!/bin/sh" > /jffs/scripts/dhcpc-event
-    chmod +x /jffs/scripts/dhcpc-event
-  fi
-  if ! grep -qs "^${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh$" /jffs/scripts/dhcpc-event; then
-    echo "${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh" >> /jffs/scripts/dhcpc-event
   fi
 
   echo "Applying iptables rules..."
