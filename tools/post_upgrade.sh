@@ -18,5 +18,7 @@ if ipset list CHINAIPS &> /dev/null; then
   ipset destroy CHINAIPS 2> /dev/null
 fi
 
-echo -e "2019/05/11 Remove scripts from dhcpc-event"
-sed -i "\#${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh#d" /jffs/scripts/dhcpc-event 2> /dev/null
+echo -e "2019/05/11 Remove dhcpc-event task"
+if [[ -f /jffs/scripts/dhcpc-event ]]; then
+  sed -i "\#${SS_MERLIN_HOME}/scripts/apply_iptables_rule.sh#d" /jffs/scripts/dhcpc-event 2> /dev/null
+fi
