@@ -58,6 +58,9 @@ start_proxy() {
     exit 1
   fi
 
+  echo "Waiting 5 seconds for initializing..."
+  sleep 5
+
   echo "Initializing dnsmasq..."
   if [[ -d "$DNSMASQ_CONFIG_DIR" ]]; then
     default_dns_ip=127.0.0.1
@@ -131,7 +134,6 @@ start_proxy() {
 
 restart_proxy() {
   stop_proxy
-  sleep 5
   start_proxy
 }
 
