@@ -43,7 +43,7 @@ if ipset create whitelist hash:ip 2> /dev/null; then
   remote_server_address=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
   remote_server_ip=${remote_server_address}
   ISIP=$(echo ${remote_server_address} | grep -E '([0-9]{1,3}[\.]){3}[0-9]{1,3}|:')
-  if [[ -z "${ISIP}" ]];then
+  if [[ -z "$ISIP" ]];then
     echo "Resolving server IP address..."
     remote_server_ip=$(nslookup "$remote_server_address" | sed '1,4d' | awk '{print $3}' | grep -v : | awk 'NR==1{print}')
     echo "Server IP address is ${remote_server_ip}"
