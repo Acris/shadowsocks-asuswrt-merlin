@@ -33,7 +33,7 @@ The shadowsocks configuration file location is: `/opt/share/ss-merlin/etc/shadow
 
 We highly recommend to enable `v2ray-plugin` on your server side. You can set up your server in several command with: [https://github.com/Acris/docker-shadowsocks-libev](https://github.com/Acris/docker-shadowsocks-libev).
 
-If you want to enable support, you should set `mode` from `tcp_only` to `tcp_and_udp`.
+If you want to enable UDP support, you should set `mode` from `tcp_only` to `tcp_and_udp`.
 
 For configuration file documents, you can go to: [https://github.com/shadowsocks/shadowsocks-libev/blob/master/doc/shadowsocks-libev.asciidoc#config-file](https://github.com/shadowsocks/shadowsocks-libev/blob/master/doc/shadowsocks-libev.asciidoc#config-file)
 ```sh
