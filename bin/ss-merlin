@@ -58,9 +58,6 @@ start_proxy() {
     exit 1
   fi
 
-  echo "Waiting 5 seconds for initializing..."
-  sleep 5
-
   echo "Initializing dnsmasq..."
   if [[ -d "$DNSMASQ_CONFIG_DIR" ]]; then
     default_dns_ip=127.0.0.1
@@ -112,7 +109,7 @@ start_proxy() {
     chmod +x /jffs/scripts/post-mount
   fi
   if ! grep -qs "^ss-merlin start$" /jffs/scripts/post-mount; then
-    echo "ss-merlin start" >> /jffs/scripts/post-mount
+    echo "sleep 10 && ss-merlin start" >> /jffs/scripts/post-mount
   fi
 
   echo "Applying iptables rules..."
