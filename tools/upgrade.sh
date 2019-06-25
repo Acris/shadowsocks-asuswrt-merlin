@@ -40,6 +40,12 @@ upgrade() {
     echo -e "$ansi_std"
     echo "Give us a feedback at https://github.com/Acris/shadowsocks-asuswrt-merlin."
   else
+    if [[ -f ${SS_MERLIN_HOME}/etc/shadowsocks/config.json.bak ]]; then
+      echo -e "Restore shadowsocks configuration file"
+      cd ${SS_MERLIN_HOME}/etc/shadowsocks
+      rm config.json
+      mv config.json.bak config.json
+    fi
     echo -e "$ansi_red There was an error updating. Try again later? $ansi_std"
   fi
 }
