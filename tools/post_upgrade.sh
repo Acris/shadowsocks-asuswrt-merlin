@@ -4,7 +4,7 @@ SS_MERLIN_HOME=/opt/share/ss-merlin
 DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
 
 # Anything should do after upgrade
-if ! cru l | grep upgrade-ss-merlin; then
+if ! cru l | grep upgrade-ss-merlin &> /dev/null; then
   echo -e "Creating automatic upgrade cron jobs..."
   cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
 fi
