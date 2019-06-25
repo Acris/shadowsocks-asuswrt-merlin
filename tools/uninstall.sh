@@ -25,6 +25,7 @@ uninstall() {
   cru d check-iptables-rule
   cru d update-ip-whitelist
   cru d update-dns-whitelist
+  cru d update-gfwlist
   cru d upgrade-ss-merlin
 
   echo -e "$ansi_green Removing packages... $ansi_std"

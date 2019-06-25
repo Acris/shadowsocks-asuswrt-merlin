@@ -70,6 +70,9 @@ install() {
   # Remove default unbound start script
   rm -f /opt/etc/init.d/S61unbound 2> /dev/null
 
+  echo -e "$ansi_green Creating automatic upgrade cron jobs... $ansi_std"
+  cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
+
   echo -e "$ansi_green"
   echo "   ______           __                        __       "
   echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ "

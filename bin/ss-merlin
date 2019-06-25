@@ -25,7 +25,6 @@ stop_proxy() {
   echo -e "$ansi_green Deleting service check and upgrade cron job... $ansi_std"
   cru d check-services-alive 2> /dev/null
   cru d check-iptables-rule 2> /dev/null
-  cru d upgrade-ss-merlin 2> /dev/null
 
   echo -e "$ansi_green Removing user scripts... $ansi_std"
   sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
@@ -60,11 +59,11 @@ start_proxy() {
 
   echo "Initializing dnsmasq..."
   if [[ -d "$DNSMASQ_CONFIG_DIR" ]]; then
-    default_dns_ip=127.0.0.1
+    china_dns_ip=119.29.29.29
 
-    sed "s#114\.114\.114\.114#${default_dns_ip}#" ${ACCELERATED_CONFIG}.bak > ${ACCELERATED_CONFIG}
-    sed "s#114\.114\.114\.114#${default_dns_ip}#" ${GOOGLE_CONFIG}.bak > ${GOOGLE_CONFIG}
-    sed "s#114\.114\.114\.114#${default_dns_ip}#" ${APPLE_CONFIG}.bak > ${APPLE_CONFIG}
+    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${ACCELERATED_CONFIG}.bak > ${ACCELERATED_CONFIG}
+    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${GOOGLE_CONFIG}.bak > ${GOOGLE_CONFIG}
+    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${APPLE_CONFIG}.bak > ${APPLE_CONFIG}
 
     user_domain_name_whitelist=${SS_MERLIN_HOME}/rules/user_domain_name_whitelist.txt
     user_domain_name_blocklist=${SS_MERLIN_HOME}/rules/user_domain_name_blocklist.txt
@@ -74,7 +73,7 @@ start_proxy() {
     if [[ -f ${user_domain_name_whitelist} ]]; then
       rm -f ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
       for i in $(cat ${user_domain_name_whitelist} | grep -v '^#'); do
-        echo "server=/${i}/${default_dns_ip}" >> ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
+        echo "server=/${i}/${china_dns_ip}" >> ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
       done
     fi
 
@@ -98,10 +97,10 @@ start_proxy() {
   echo "Creating cron jobs..."
   cru a check-services-alive "* * * * *" "$SS_MERLIN_HOME/scripts/start_all_services.sh"
   cru a check-iptables-rule "*/5 * * * *" "$SS_MERLIN_HOME/scripts/apply_iptables_rule.sh"
-  cru a update-ip-whitelist "15 2 * * 0" "$SS_MERLIN_HOME/scripts/update_ip_whitelist.sh"
-  cru a update-dns-whitelist "15 3 * * 0" "$SS_MERLIN_HOME/scripts/update_dns_whitelist.sh"
-  cru a update-gfwlist "15 4 * * 0" "$SS_MERLIN_HOME/scripts/update_gfwlist.sh"
-  cru a upgrade-ss-merlin "20 6 * * 0" "$SS_MERLIN_HOME/tools/upgrade.sh"
+  cru a update-ip-whitelist "15 2 * * *" "$SS_MERLIN_HOME/scripts/update_ip_whitelist.sh"
+  cru a update-dns-whitelist "15 3 * * *" "$SS_MERLIN_HOME/scripts/update_dns_whitelist.sh"
+  cru a update-gfwlist "15 4 * * *" "$SS_MERLIN_HOME/scripts/update_gfwlist.sh"
+  cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
 
   echo -e "$ansi_green Creating post-mount task... $ansi_std"
   if [[ ! -f /jffs/scripts/post-mount ]]; then
