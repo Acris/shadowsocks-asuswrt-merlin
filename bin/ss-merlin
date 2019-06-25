@@ -108,7 +108,7 @@ start_proxy() {
     chmod +x /jffs/scripts/post-mount
   fi
   if ! grep -qs "^ss-merlin start$" /jffs/scripts/post-mount; then
-    echo "sleep 10 && ss-merlin start" >> /jffs/scripts/post-mount
+    echo "ss-merlin start" >> /jffs/scripts/post-mount
   fi
 
   echo "Applying iptables rules..."
@@ -121,6 +121,7 @@ start_proxy() {
   if ! grep -qs "^conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf$" /jffs/configs/dnsmasq.conf.add; then
       echo "conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,*.conf" >> /jffs/configs/dnsmasq.conf.add
   fi
+  sleep 5
   service restart_dnsmasq
 
   touch /tmp/ss-merlin-is-run
