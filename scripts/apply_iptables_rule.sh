@@ -84,6 +84,7 @@ if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
 
   # Apply TCP rules
   iptables -t nat -A PREROUTING -p tcp -j SHADOWSOCKS_TCP
+  iptables -t nat -A OUTPUT -p tcp -j SHADOWSOCKS_TCP
 fi
 
 if [[ ${udp} -eq 1 ]]; then
@@ -107,6 +108,7 @@ if [[ ${udp} -eq 1 ]]; then
 
     # Apply for udp
     iptables -t mangle -A PREROUTING -p udp -j SHADOWSOCKS_UDP
+    iptables -t mangle -A OUTPUT -p udp -j SHADOWSOCKS_UDP
   fi
 fi
 

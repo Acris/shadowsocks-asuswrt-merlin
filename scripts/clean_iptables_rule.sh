@@ -2,10 +2,12 @@
 
 # delete related rules
 iptables -t nat -D PREROUTING -p tcp -j SHADOWSOCKS_TCP 2> /dev/null
+iptables -t nat -D OUTPUT -p tcp -j SHADOWSOCKS_TCP 2> /dev/null
 iptables -t nat -F SHADOWSOCKS_TCP 2> /dev/null
 iptables -t nat -X SHADOWSOCKS_TCP 2> /dev/null
 
 iptables -t mangle -D PREROUTING -p udp -j SHADOWSOCKS_UDP 2> /dev/null
+iptables -t mangle -D OUTPUT -p udp -j SHADOWSOCKS_UDP 2> /dev/null
 iptables -t mangle -F SHADOWSOCKS_UDP 2> /dev/null
 iptables -t mangle -X SHADOWSOCKS_UDP 2> /dev/null
 
