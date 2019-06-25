@@ -40,6 +40,7 @@ fi
 
 # Add user_ip_whitelist.txt
 if ipset create whitelist hash:ip 2> /dev/null; then
+  china_dns_ip=119.29.29.29
   remote_server_address=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
   remote_server_ip=${remote_server_address}
   ISIP=$(echo ${remote_server_address} | grep -E '([0-9]{1,3}[\.]){3}[0-9]{1,3}|:')
@@ -51,6 +52,7 @@ if ipset create whitelist hash:ip 2> /dev/null; then
 
   OLDIFS="$IFS" && IFS=$'\n'
   if ipset list whitelist &> /dev/null; then
+    ipset add whitelist ${china_dns_ip}
     # Add shadowsocks server ip address
     ipset add whitelist ${remote_server_ip}
 
