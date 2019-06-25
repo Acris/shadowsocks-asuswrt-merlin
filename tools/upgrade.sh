@@ -11,7 +11,7 @@ upgrade() {
   ${SS_MERLIN_HOME}/tools/pre_upgrade.sh
 
   echo -e "$ansi_green Updating source code... $ansi_std"
-  cd "$SS_MERLIN_HOME"
+  cd ${SS_MERLIN_HOME}
   if git pull origin master
   then
     echo -e "$ansi_green Giving execute permissions... $ansi_std"
