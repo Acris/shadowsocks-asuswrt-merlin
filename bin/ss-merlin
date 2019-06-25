@@ -25,7 +25,6 @@ stop_proxy() {
   echo -e "$ansi_green Deleting service check and upgrade cron job... $ansi_std"
   cru d check-services-alive 2> /dev/null
   cru d check-iptables-rule 2> /dev/null
-  cru d upgrade-ss-merlin 2> /dev/null
 
   echo -e "$ansi_green Removing user scripts... $ansi_std"
   sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
