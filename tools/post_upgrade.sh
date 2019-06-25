@@ -4,6 +4,10 @@ SS_MERLIN_HOME=/opt/share/ss-merlin
 DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
 
 # Anything should do after upgrade
+if ! cru l | grep upgrade-ss-merlin; then
+  echo -e "Creating automatic upgrade cron jobs..."
+  cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
+fi
 
 if [[ ! -f ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ]]; then
   echo "2019/04/20 Update GFW list after upgrade"
