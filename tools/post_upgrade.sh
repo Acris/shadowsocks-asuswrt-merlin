@@ -43,7 +43,7 @@ if [[ -f ${SS_MERLIN_HOME}/etc/ss-merlin.conf.bak ]]; then
   mv ss-merlin.conf.bak ss-merlin.conf
 fi
 
-if stubby -h 2> /dev/null; then
+if stubby -h &> /dev/null; then
   # Uninstall stubby
   opkg remove --autoremove stubby 2> /dev/null
   rm -rf /opt/var/cache/stubby 2> /dev/null
