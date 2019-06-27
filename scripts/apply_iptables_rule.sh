@@ -129,7 +129,7 @@ if [[ ${udp} -eq 1 ]]; then
     iptables -t mangle -A SS_OUTPUT -p udp -j SHADOWSOCKS_UDP
     iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
     iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
-    iptables -t mangle -A SS_PREROUTING -m mark --mark 0x2333 -p udp -j TPROXY -on-port ${local_redir_port}
+    iptables -t mangle -A SS_PREROUTING -m mark --mark 0x2333 -p udp -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
   fi
 fi
 
