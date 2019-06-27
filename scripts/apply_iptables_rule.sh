@@ -64,9 +64,13 @@ if ipset create whitelist hash:ip 2> /dev/null; then
 
   OLDIFS="$IFS" && IFS=$'\n'
   if ipset list whitelist &> /dev/null; then
+    # Add China default DNS server
     ipset add whitelist ${china_dns_ip}
     # Add shadowsocks server ip address
     ipset add whitelist ${remote_server_ip}
+    # Add rubyfush DNS server
+    ipset add whitelist 118.89.110.78
+    ipset add whitelist 47.96.179.163
 
     # Add user_ip_whitelist.txt
     if [[ -e ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt ]]; then
