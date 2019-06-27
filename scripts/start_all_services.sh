@@ -10,6 +10,9 @@ fi
 
 ss_pid=`pidof ss-redir`
 if [[ -z "$ss_pid" ]]; then
+  if [[ ! -f ${SS_MERLIN_HOME}/etc/shadowsocks/config.json ]]; then
+    cp ${SS_MERLIN_HOME}/etc/shadowsocks/config.sample.json ${SS_MERLIN_HOME}/etc/shadowsocks/config.json
+  fi
   ss-redir -c ${SS_MERLIN_HOME}/etc/shadowsocks/config.json -f /opt/var/run/ss-redir.pid
 fi
 

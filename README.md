@@ -29,7 +29,7 @@ sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin
 
 ### Configuration
 #### Configure shadowsocks
-The shadowsocks configuration file location is: `/opt/share/ss-merlin/etc/shadowsocks/config.json`, ensure `local_address` is set to `0.0.0.0`.
+The sample shadowsocks configuration file location is: `/opt/share/ss-merlin/etc/shadowsocks/config.sample.json`, ensure `local_address` is set to `0.0.0.0`.
 
 We highly recommend to enable `v2ray-plugin` on your server side. You can set up your server in several command with: [https://github.com/Acris/docker-shadowsocks-libev](https://github.com/Acris/docker-shadowsocks-libev).
 
@@ -37,20 +37,24 @@ If you want to enable UDP support, you should set `mode` from `tcp_only` to `tcp
 
 For configuration file documents, you can go to: [https://github.com/shadowsocks/shadowsocks-libev/blob/master/doc/shadowsocks-libev.asciidoc#config-file](https://github.com/shadowsocks/shadowsocks-libev/blob/master/doc/shadowsocks-libev.asciidoc#config-file)
 ```sh
-# Edit the shadowsocks configuration file
-vi /opt/share/ss-merlin/etc/shadowsocks/config.json
+# Copy and edit the shadowsocks configuration file
+cd /opt/share/ss-merlin/etc/shadowsocks
+cp config.sample.json config.json
+vi config.json
 ```
 
 #### Configure shadowsocks-asuswrt-merlin
-The shadowsocks-asuswrt-merlin configuration file location is: `/opt/share/ss-merlin/etc/ss-merlin.conf`. Currently, shadowsocks-asuswrt-merlin support three mode:
+The sample shadowsocks-asuswrt-merlin configuration file location is: `/opt/share/ss-merlin/etc/ss-merlin.sample.conf`. Currently, shadowsocks-asuswrt-merlin support three mode:
 - 0: GFW list.
 - 1: Bypass mainland China.
 - 2: Global mode.
 
 You can also enable or disable UDP support to change `udp=0` or `udp=1`, ensure your server side support UDP and set `"mode": "tcp_and_udp"` in shadowsocks configuration file.
 ```sh
-# Edit the shadowsocks-asuswrt-merlin configuration file
-vi /opt/share/ss-merlin/etc/ss-merlin.conf
+# Copy and edit the shadowsocks-asuswrt-merlin configuration file
+cd /opt/share/ss-merlin/etc
+cp ss-merlin.sample.conf ss-merlin.conf
+vi ss-merlin.conf
 ```
 
 Then, start the service:

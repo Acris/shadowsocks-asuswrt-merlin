@@ -35,3 +35,10 @@ if [[ -f ${SS_MERLIN_HOME}/etc/shadowsocks/config.json.bak ]]; then
   mv config.json.bak config.json
   sed -i 's#\("local_address": "\).*#\10.0.0.0",#g' config.json
 fi
+
+if [[ -f ${SS_MERLIN_HOME}/etc/ss-merlin.conf.bak ]]; then
+  echo -e "Restore ss-merlin configuration file"
+  cd ${SS_MERLIN_HOME}/etc
+  rm ss-merlin.conf
+  mv ss-merlin.conf.bak ss-merlin.conf
+fi

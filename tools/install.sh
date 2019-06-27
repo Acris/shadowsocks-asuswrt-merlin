@@ -80,8 +80,8 @@ install() {
   echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/ "
   echo "                                   ...is now installed!"
   echo -e "$ansi_std"
-  echo -e "$ansi_yellow Edit your shadowsocks configuration file at: /opt/share/ss-merlin/etc/shadowsocks/config.json $ansi_std"
-  echo -e "$ansi_yellow and shadowsocks-asuswrt-merlin configuration file at: /opt/share/ss-merlin/etc/ss-merlin.conf $ansi_std"
+  echo -e "$ansi_yellow Copy and edit your shadowsocks configuration file at: /opt/share/ss-merlin/etc/shadowsocks/config.sample.json $ansi_std"
+  echo -e "$ansi_yellow and shadowsocks-asuswrt-merlin configuration file at: /opt/share/ss-merlin/etc/ss-merlin.sample.conf $ansi_std"
   echo "Type ss-merlin to get all supported arguments."
   echo "Get more details and give us a feedback at https://github.com/Acris/shadowsocks-asuswrt-merlin."
 }

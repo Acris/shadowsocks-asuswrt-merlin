@@ -8,3 +8,8 @@ echo -e "Back up shadowsocks configuration file"
 cd ${SS_MERLIN_HOME}/etc/shadowsocks
 cp config.json config.json.bak
 git checkout config.json
+
+echo -e "Back up ss-merlin configuration file"
+cd ${SS_MERLIN_HOME}/etc
+cp ss-merlin.conf ss-merlin.conf.bak
+git checkout ss-merlin.conf
