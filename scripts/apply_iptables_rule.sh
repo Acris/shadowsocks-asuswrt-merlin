@@ -86,6 +86,10 @@ local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'loc
 
 if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
   # TCP rules
+  iptables -t nat -N SS_OUTPUT
+  iptables -t nat -N SS_PREROUTING
+  iptables -t nat -A OUTPUT -j SS_OUTPUT
+  iptables -t nat -A PREROUTING -j SS_PREROUTING
   iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set localips dst -j RETURN
   iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set whitelist dst -j RETURN
   if [[ ${mode} -eq 1 ]]; then
@@ -97,12 +101,8 @@ if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
     iptables -t nat -A SHADOWSOCKS_TCP -p tcp -j REDIRECT --to-ports ${local_redir_port}
   fi
   # Apply TCP rules
-  iptables -t nat -A OUTPUT -p tcp -j SHADOWSOCKS_TCP
-  OLDIFS="$IFS" && IFS=$'\n'
-  for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
-    iptables -t nat -A PREROUTING -p tcp -s ${ip} -j SHADOWSOCKS_TCP
-  done
-  IFS=${OLDIFS}
+  iptables -t nat -A SS_OUTPUT -p tcp -j SHADOWSOCKS_TCP
+  iptables -t nat -A SS_PREROUTING -p tcp -s 192.168.0.0/16 -j SHADOWSOCKS_TCP
 fi
 
 if [[ ${udp} -eq 1 ]]; then
@@ -111,6 +111,10 @@ if [[ ${udp} -eq 1 ]]; then
     modprobe xt_TPROXY
     ip route add local 0.0.0.0/0 dev lo table 100
     ip rule add fwmark 0x2333 table 100
+    iptables -t mangle -N SS_OUTPUT
+    iptables -t mangle -N SS_PREROUTING
+    iptables -t mangle -A OUTPUT -j SS_OUTPUT
+    iptables -t mangle -A PREROUTING -j SS_PREROUTING
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set localips dst -j RETURN
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set whitelist dst -j RETURN
     if [[ ${mode} -eq 1 ]]; then
@@ -122,16 +126,12 @@ if [[ ${udp} -eq 1 ]]; then
       iptables -t mangle -A SHADOWSOCKS_UDP -j MARK --set-mark 0x2333
     fi
     # Apply for udp
-    iptables -t nat -A OUTPUT -p udp -d 127.0.0.1 --dport 53 -j REDIRECT --to-ports 15253
-    iptables -t mangle -A OUTPUT -p udp -j SHADOWSOCKS_UDP
-    OLDIFS="$IFS" && IFS=$'\n'
-    for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
-      iptables -t nat -A PREROUTING -p udp -s ${ip} --dport 53 -m mark ! --mark 0x2333 -j REDIRECT --to-ports 15253
-      iptables -t mangle -A PREROUTING -p udp -s ${ip} --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
-      iptables -t mangle -A PREROUTING -p udp -s ${ip} -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
-    done
-    IFS=${OLDIFS}
-    iptables -t mangle -A PREROUTING -m mark --mark 0x2333 -p udp -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
+    iptables -t nat -A SS_OUTPUT -p udp -d 127.0.0.1 --dport 53 -j REDIRECT --to-ports 15253
+    iptables -t mangle -A SS_OUTPUT -p udp -j SHADOWSOCKS_UDP
+    iptables -t nat -A SS_PREROUTING -p udp -s 192.168.0.0/16 --dport 53 -m mark ! --mark 0x2333 -j REDIRECT --to-ports 15253
+    iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
+    iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
+    iptables -t mangle -A SS_PREROUTING -m mark --mark 0x2333 -p udp -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
   fi
 fi
 
