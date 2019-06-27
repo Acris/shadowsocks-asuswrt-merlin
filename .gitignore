@@ -1,7 +1,7 @@
 .idea
-etc/shadowsocks/
 etc/dnsmasq.d/
 !etc/dnsmasq.d/through_unbound.conf
+etc/shadowsocks/config.json
 etc/ss-merlin.conf
 rules/
 !rules/localips
