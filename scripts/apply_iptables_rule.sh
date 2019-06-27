@@ -16,26 +16,32 @@ if [[ ${mode} -eq 0 ]]; then
     cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
   fi
 elif [[ ${mode} -eq 1 ]]; then
-  # Add China IP to chinaips ipset for Bypass LAN & mainland China mode
+  # Add China IP to chinaips ipset for Bypass mainland China mode
   if ipset create chinaips hash:net 2> /dev/null; then
     OLDIFS="$IFS" && IFS=$'\n'
     if ipset list chinaips &> /dev/null; then
       count=$(ipset list chinaips | wc -l)
       if [[ "$count" -lt "8000" ]]; then
         echo "Applying China ipset rule, it maybe take several minute to finish..."
-
         for ip in $(cat ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt | grep -v '^#'); do
           ipset add chinaips ${ip}
         done
-
-        for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
-          ipset add chinaips ${ip}
-        done
-
       fi
     fi
     IFS=${OLDIFS}
   fi
+fi
+
+# Add intranet IP to localips ipset for Bypass LAN
+if ipset create localips hash:net 2> /dev/null; then
+  OLDIFS="$IFS" && IFS=$'\n'
+  if ipset list localips &> /dev/null; then
+    echo "Applying localips ipset rule..."
+    for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
+      ipset add localips ${ip}
+    done
+  fi
+  IFS=${OLDIFS}
 fi
 
 # Add user_ip_whitelist.txt
@@ -70,43 +76,52 @@ local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'loc
 
 if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
   # TCP rules
+  iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set localips dst -j RETURN
   iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set whitelist dst -j RETURN
-
   if [[ ${mode} -eq 1 ]]; then
     iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set chinaips dst -j RETURN
   fi
-
   if [[ ${mode} -eq 0 ]]; then
     iptables -t nat -A SHADOWSOCKS_TCP -p tcp -m set --match-set gfwlist dst -j REDIRECT --to-ports ${local_redir_port}
   else
     iptables -t nat -A SHADOWSOCKS_TCP -p tcp -j REDIRECT --to-ports ${local_redir_port}
   fi
-
   # Apply TCP rules
-  iptables -t nat -A PREROUTING -p tcp -j SHADOWSOCKS_TCP
+  iptables -t nat -A OUTPUT -p tcp -j SHADOWSOCKS_TCP
+  OLDIFS="$IFS" && IFS=$'\n'
+  for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
+    iptables -t nat -A PREROUTING -p tcp -s ${ip} -j SHADOWSOCKS_TCP
+  done
+  IFS=${OLDIFS}
 fi
 
 if [[ ${udp} -eq 1 ]]; then
   if iptables -t mangle -N SHADOWSOCKS_UDP 2> /dev/null; then
     # UDP rules
     modprobe xt_TPROXY
-    ip route add local default dev lo table 100
-    ip rule add fwmark 1 lookup 100
-
+    ip route add local 0.0.0.0/0 dev lo table 100
+    ip rule add fwmark 0x2333 table 100
+    iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set localips dst -j RETURN
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set whitelist dst -j RETURN
-
     if [[ ${mode} -eq 1 ]]; then
       iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set chinaips dst -j RETURN
     fi
-
     if [[ ${mode} -eq 0 ]]; then
-      iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set gfwlist dst -j TPROXY --on-port ${local_redir_port} --tproxy-mark 0x01/0x01
+      iptables -t mangle -A SHADOWSOCKS_UDP -m set --match-set gfwlist dst -j MARK --set-mark 0x2333
     else
-      iptables -t mangle -A SHADOWSOCKS_UDP -p udp -j TPROXY --on-port ${local_redir_port} --tproxy-mark 0x01/0x01
+      iptables -t mangle -A SHADOWSOCKS_UDP -j MARK --set-mark 0x2333
     fi
-
     # Apply for udp
-    iptables -t mangle -A PREROUTING -p udp -j SHADOWSOCKS_UDP
+    iptables -t nat -A OUTPUT -p udp -d 127.0.0.1 --dport 53 -j REDIRECT --to-ports 15253
+    iptables -t mangle -A OUTPUT -p udp -j SHADOWSOCKS_UDP
+    OLDIFS="$IFS" && IFS=$'\n'
+    for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
+      iptables -t nat -A PREROUTING -p udp -s ${ip} --dport 53 -m mark ! --mark 0x2333 -j REDIRECT --to-ports 15253
+      iptables -t mangle -A PREROUTING -p udp -s ${ip} --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
+      iptables -t mangle -A PREROUTING -p udp -s ${ip} -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
+    done
+    IFS=${OLDIFS}
+    iptables -t mangle -A PREROUTING -m mark --mark 0x2333 -p udp -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
   fi
 fi
 

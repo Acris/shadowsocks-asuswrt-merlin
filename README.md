@@ -44,7 +44,7 @@ vi /opt/share/ss-merlin/etc/shadowsocks/config.json
 #### Configure shadowsocks-asuswrt-merlin
 The shadowsocks-asuswrt-merlin configuration file location is: `/opt/share/ss-merlin/etc/ss-merlin.conf`. Currently, shadowsocks-asuswrt-merlin support three mode:
 - 0: GFW list.
-- 1: Bypass LAN & mainland China.
+- 1: Bypass mainland China.
 - 2: Global mode.
 
 You can also enable or disable UDP support to change `udp=0` or `udp=1`, ensure your server side support UDP and set `"mode": "tcp_and_udp"` in shadowsocks configuration file.
@@ -98,6 +98,7 @@ Thanks for the following awesome projects ❤️
 - [dnsmasq-china-list](https://github.com/felixonmars/dnsmasq-china-list)
 - [gfwlist](https://github.com/gfwlist/gfwlist)
 - [gfwlist2dnsmasq](https://github.com/cokebar/gfwlist2dnsmasq)
+- [ss-tproxy](https://github.com/zfl9/ss-tproxy)
 - [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
 - And many more.
 
