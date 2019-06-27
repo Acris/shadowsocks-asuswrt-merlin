@@ -16,7 +16,7 @@ if [[ ${mode} -eq 0 ]]; then
     cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
   fi
 elif [[ ${mode} -eq 1 ]]; then
-  # Add China IP to chinaips ipset for Bypass mainland China mode
+  # Add China IP to chinaips ipset for Bypass LAN & mainland China mode
   if ipset create chinaips hash:net 2> /dev/null; then
     OLDIFS="$IFS" && IFS=$'\n'
     if ipset list chinaips &> /dev/null; then
