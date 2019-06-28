@@ -32,8 +32,9 @@ upgrade() {
     fi
 
     # Statistics
+    echo -e "$ansi_green Sending statistics... $ansi_std"
     cd ${SS_MERLIN_HOME}
-    wget --quiet --method POST --output-document - "https://ss-merlin-stats.iloli.li/stats?hash=`git rev-parse --short HEAD`"
+    wget --method POST --output-document - "https://ss-merlin-stats.iloli.li/stats?hash=`git rev-parse --short HEAD`"
 
     echo -e "$ansi_green"
     echo "   ______           __                        __       ";
