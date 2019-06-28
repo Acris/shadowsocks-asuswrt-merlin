@@ -31,6 +31,10 @@ upgrade() {
       ss-merlin restart
     fi
 
+    # Statistics
+    cd ${SS_MERLIN_HOME}
+    wget --quiet --method POST --output-document - "https://ss-merlin.iloli.li/stats?hash=`git rev-parse --short HEAD`"
+
     echo -e "$ansi_green"
     echo "   ______           __                        __       ";
     echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ ";
