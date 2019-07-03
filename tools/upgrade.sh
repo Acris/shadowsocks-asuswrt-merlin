@@ -12,7 +12,7 @@ upgrade() {
 
   echo -e "$ansi_green Updating source code... $ansi_std"
   cd ${SS_MERLIN_HOME}
-  if git pull origin master
+  if git pull
   then
     echo -e "$ansi_green Giving execute permissions... $ansi_std"
     chmod +x ${SS_MERLIN_HOME}/bin/*
