@@ -33,9 +33,10 @@ upgrade() {
 
     # Statistics
     cd ${SS_MERLIN_HOME}
-    hash=`git rev-parse --short HEAD`
-    mac=`cat /sys/class/net/eth0/address`
-    wget --quiet --method POST --output-document - "https://ss-merlin.iloli.li/stats?hash=$hash&mac=$mac"
+    stats_branch=`git rev-parse --abbrev-ref HEAD`
+    stats_hash=`git rev-parse --short HEAD`
+    stats_mac=`cat /sys/class/net/eth0/address`
+    wget --quiet --method POST --output-document - "https://ss-merlin.iloli.li/stats?branch=$stats_branch&hash=$stats_hash&mac=$stats_mac"
 
     echo -e "$ansi_green"
     echo "   ______           __                        __       ";
