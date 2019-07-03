@@ -24,7 +24,11 @@ opkg install ca-certificates git-http wget
 ### Installation
 shadowsocks-asuswrt-merlin is installed by running the following commands in your terminal:
 ```sh
+# For Broadcom SDK6/SDK7 ARM platform (RT-AC56 upto RT-AC5300)
 sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/master/tools/install.sh -O -)"
+
+# For Broadcom HND ARM platform (RT-AC86U) and HND AX ARM (RT-AX88U)
+sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/hnd/tools/install.sh -O -)"
 ```
 
 ### Configuration
