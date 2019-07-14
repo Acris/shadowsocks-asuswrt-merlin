@@ -78,7 +78,7 @@ start_proxy() {
     fi
 
     if [[ -f ${user_domain_name_blocklist} ]]; then
-      rm -f ${DNSMASQ_CONFIG_DIR}/blacklist-domains.china.conf
+      rm -f ${DNSMASQ_CONFIG_DIR}/blocklist-domains.china.conf
       for i in $(cat ${user_domain_name_blocklist} | grep -v '^#'); do
         echo "address=/${i}/127.0.0.1" >> ${DNSMASQ_CONFIG_DIR}/blocklist-domains.china.conf
       done
