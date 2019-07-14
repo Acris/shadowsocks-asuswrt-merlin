@@ -7,9 +7,6 @@ upgrade() {
   ansi_green="\033[1;32m"
   ansi_std="\033[m"
 
-  echo -e "$ansi_green Executing pre upgrade scripts... $ansi_std"
-  ${SS_MERLIN_HOME}/tools/pre_upgrade.sh
-
   echo -e "$ansi_green Updating source code... $ansi_std"
   cd ${SS_MERLIN_HOME}
   if git pull
