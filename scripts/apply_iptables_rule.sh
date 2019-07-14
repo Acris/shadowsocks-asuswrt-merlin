@@ -50,7 +50,7 @@ if ipset create localips hash:net 2> /dev/null; then
   IFS=${OLDIFS}
 fi
 
-# Add user_ip_whitelist.txt
+# Add whitelist
 if ipset create whitelist hash:ip 2> /dev/null; then
   china_dns_ip=119.29.29.29
   remote_server_address=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
