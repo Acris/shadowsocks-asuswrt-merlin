@@ -101,6 +101,7 @@ if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
   else
     iptables -t nat -A SHADOWSOCKS_TCP -p tcp -j REDIRECT --to-ports ${local_redir_port}
   fi
+  iptables -t nat -A SHADOWSOCKS_TCP -p tcp -m set --match-set usergfwlist dst -j REDIRECT --to-ports ${local_redir_port}
   # Apply TCP rules
   iptables -t nat -A SS_OUTPUT -p tcp -j SHADOWSOCKS_TCP
   iptables -t nat -A SS_PREROUTING -p tcp -s 192.168.0.0/16 -j SHADOWSOCKS_TCP
@@ -127,6 +128,7 @@ if [[ ${udp} -eq 1 ]]; then
     else
       iptables -t mangle -A SHADOWSOCKS_UDP -j MARK --set-mark 0x2333
     fi
+    iptables -t mangle -A SHADOWSOCKS_UDP -m set --match-set usergfwlist dst -j MARK --set-mark 0x2333
     # Apply for udp
     iptables -t mangle -A SS_OUTPUT -p udp -j SHADOWSOCKS_UDP
     iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 --dport 53 -m mark ! --mark 0x2333 -j ACCEPT

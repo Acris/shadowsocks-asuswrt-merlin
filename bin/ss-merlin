@@ -86,10 +86,12 @@ start_proxy() {
     fi
 
     if [[ -f ${user_domain_name_gfwlist} ]]; then
+      rm -f ${DNSMASQ_CONFIG_DIR}/user-gfwlist-domains.conf 2> /dev/null
       for i in $(cat ${user_domain_name_gfwlist} | grep -v '^#'); do
         sed -i "/server=\/${i}\/.*/d" ${ACCELERATED_CONFIG}
         sed -i "/server=\/${i}\/.*/d" ${GOOGLE_CONFIG}
         sed -i "/server=\/${i}\/.*/d" ${APPLE_CONFIG}
+        echo "ipset=/${i}/usergfwlist" >> ${DNSMASQ_CONFIG_DIR}/user-gfwlist-domains.conf
       done
     fi
     IFS=${OLDIFS}

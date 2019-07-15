@@ -27,5 +27,6 @@ ipset destroy gfwlist 2> /dev/null
 ipset destroy localips 2> /dev/null
 ipset destroy whitelist 2> /dev/null
 ipset destroy userwhitelist 2> /dev/null
+ipset destroy usergfwlist 2> /dev/null
 
 echo "Clean iptables rule done."
