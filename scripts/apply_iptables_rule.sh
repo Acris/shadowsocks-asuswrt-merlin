@@ -18,14 +18,15 @@ modprobe xt_set
 
 if [[ ${mode} -eq 0 ]]; then
   # Add GFW list to gfwlist ipset for GFW list mode
-  if ipset create gfwlist hash:ip 2> /dev/null; then
+  if ipset create gfwlist hash:ip 2>/dev/null; then
+    rm -f ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf 2>/dev/null
     cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
   fi
 elif [[ ${mode} -eq 1 ]]; then
   # Add China IP to chinaips ipset for Bypass mainland China mode
-  if ipset create chinaips hash:net 2> /dev/null; then
+  if ipset create chinaips hash:net 2>/dev/null; then
     OLDIFS="$IFS" && IFS=$'\n'
-    if ipset list chinaips &> /dev/null; then
+    if ipset list chinaips &>/dev/null; then
       count=$(ipset list chinaips | wc -l)
       if [[ "$count" -lt "8000" ]]; then
         echo "Applying China ipset rule, it maybe take several minute to finish..."
@@ -38,10 +39,14 @@ elif [[ ${mode} -eq 1 ]]; then
   fi
 fi
 
+# Create ipset for user domain name whitelist and user domain name gfwlist
+ipset create userwhitelist hash:ip 2>/dev/null
+ipset create usergfwlist hash:ip 2>/dev/null
+
 # Add intranet IP to localips ipset for Bypass LAN
-if ipset create localips hash:net 2> /dev/null; then
+if ipset create localips hash:net 2>/dev/null; then
   OLDIFS="$IFS" && IFS=$'\n'
-  if ipset list localips &> /dev/null; then
+  if ipset list localips &>/dev/null; then
     echo "Applying localips ipset rule..."
     for ip in $(cat ${SS_MERLIN_HOME}/rules/localips | grep -v '^#'); do
       ipset add localips ${ip}
@@ -51,19 +56,19 @@ if ipset create localips hash:net 2> /dev/null; then
 fi
 
 # Add whitelist
-if ipset create whitelist hash:ip 2> /dev/null; then
+if ipset create whitelist hash:ip 2>/dev/null; then
   china_dns_ip=119.29.29.29
   remote_server_address=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
   remote_server_ip=${remote_server_address}
   ISIP=$(echo ${remote_server_address} | grep -E '([0-9]{1,3}[\.]){3}[0-9]{1,3}|:')
-  if [[ -z "$ISIP" ]];then
+  if [[ -z "$ISIP" ]]; then
     echo "Resolving server IP address..."
     remote_server_ip=$(nslookup ${remote_server_address} ${china_dns_ip} | sed '1,4d' | awk '{print $3}' | grep -v : | awk 'NR==1{print}')
     echo "Server IP address is ${remote_server_ip}"
   fi
 
   OLDIFS="$IFS" && IFS=$'\n'
-  if ipset list whitelist &> /dev/null; then
+  if ipset list whitelist &>/dev/null; then
     # Add China default DNS server
     ipset add whitelist ${china_dns_ip}
     # Add shadowsocks server ip address
@@ -84,7 +89,7 @@ fi
 
 local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'local_port' | cut -d ':' -f 2 | grep -o '[0-9]*')
 
-if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
+if iptables -t nat -N SHADOWSOCKS_TCP 2>/dev/null; then
   # TCP rules
   iptables -t nat -N SS_OUTPUT
   iptables -t nat -N SS_PREROUTING
@@ -108,7 +113,7 @@ if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
 fi
 
 if [[ ${udp} -eq 1 ]]; then
-  if iptables -t mangle -N SHADOWSOCKS_UDP 2> /dev/null; then
+  if iptables -t mangle -N SHADOWSOCKS_UDP 2>/dev/null; then
     # UDP rules
     modprobe xt_TPROXY
     ip route add local 0.0.0.0/0 dev lo table 100

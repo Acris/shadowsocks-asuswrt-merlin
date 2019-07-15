@@ -1,6 +1,6 @@
 #!/bin/sh
 
-update_dns_whitelist () {
+update_dns_whitelist() {
   SS_MERLIN_HOME=/opt/share/ss-merlin
 
   ACCELERATED_CONFIG=${SS_MERLIN_HOME}/etc/dnsmasq.d/accelerated-domains.china.conf

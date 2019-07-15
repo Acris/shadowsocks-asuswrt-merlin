@@ -3,14 +3,13 @@
 upgrade() {
   SS_MERLIN_HOME=/opt/share/ss-merlin
 
-  ansi_red="\033[1;31m";
+  ansi_red="\033[1;31m"
   ansi_green="\033[1;32m"
   ansi_std="\033[m"
 
   echo -e "$ansi_green Updating source code... $ansi_std"
   cd ${SS_MERLIN_HOME}
-  if git pull
-  then
+  if git pull; then
     echo -e "$ansi_green Giving execute permissions... $ansi_std"
     chmod +x ${SS_MERLIN_HOME}/bin/*
     chmod +x ${SS_MERLIN_HOME}/scripts/*.sh
@@ -30,17 +29,17 @@ upgrade() {
 
     # Statistics
     cd ${SS_MERLIN_HOME}
-    branch=`git rev-parse --abbrev-ref HEAD`
-    hash=`git rev-parse --short HEAD`
-    mac=`cat /sys/class/net/eth0/address`
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    hash=$(git rev-parse --short HEAD)
+    mac=$(cat /sys/class/net/eth0/address)
     wget --quiet --method POST --output-document - "https://ss-merlin.iloli.li/stats?version=${branch}_${hash}&mac=${mac}"
 
     echo -e "$ansi_green"
-    echo "   ______           __                        __       ";
-    echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ ";
-    echo " _\ \/ _ \/ _ \`/ _  / _ \ |/|/ (_-</ _ \/ __/  '_/(_-<";
-    echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/ ";
-    echo "   ..has been updated and/or is at the current version!";
+    echo "   ______           __                        __       "
+    echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ "
+    echo " _\ \/ _ \/ _ \`/ _  / _ \ |/|/ (_-</ _ \/ __/  '_/(_-<"
+    echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/ "
+    echo "   ..has been updated and/or is at the current version!"
     echo -e "$ansi_std"
     echo "Give us a feedback at https://github.com/Acris/shadowsocks-asuswrt-merlin."
   else

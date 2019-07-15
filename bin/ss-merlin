@@ -7,10 +7,10 @@ ACCELERATED_CONFIG=${DNSMASQ_CONFIG_DIR}/accelerated-domains.china.conf
 GOOGLE_CONFIG=${DNSMASQ_CONFIG_DIR}/google.china.conf
 APPLE_CONFIG=${DNSMASQ_CONFIG_DIR}/apple.china.conf
 
-ansi_red="\033[1;31m";
-ansi_green="\033[1;32m";
-ansi_yellow="\033[1;33m";
-ansi_std="\033[m";
+ansi_red="\033[1;31m"
+ansi_green="\033[1;32m"
+ansi_yellow="\033[1;33m"
+ansi_std="\033[m"
 
 stop_proxy() {
   set -e
@@ -23,11 +23,11 @@ stop_proxy() {
   fi
 
   echo -e "$ansi_green Deleting service check and upgrade cron job... $ansi_std"
-  cru d check-services-alive 2> /dev/null
-  cru d check-iptables-rule 2> /dev/null
+  cru d check-services-alive 2>/dev/null
+  cru d check-iptables-rule 2>/dev/null
 
   echo -e "$ansi_green Removing user scripts... $ansi_std"
-  sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
+  sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2>/dev/null
 
   echo -e "$ansi_green Cleaning iptables rules... $ansi_std"
   ${SS_MERLIN_HOME}/scripts/clean_iptables_rule.sh
@@ -36,13 +36,11 @@ stop_proxy() {
   ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
 
   echo -e "$ansi_green Cleaning dnsmasq configuration file... $ansi_std"
-  # Delete GFW list
-  rm -f ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf 2> /dev/null
 
-  sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2> /dev/null
+  sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2>/dev/null
   service restart_dnsmasq
 
-  rm -f /tmp/ss-merlin-is-run 2> /dev/null
+  rm -f /tmp/ss-merlin-is-run 2>/dev/null
 
   echo -e "$ansi_green Stopped. $ansi_std"
 }
@@ -61,9 +59,9 @@ start_proxy() {
   if [[ -d "$DNSMASQ_CONFIG_DIR" ]]; then
     china_dns_ip=119.29.29.29
 
-    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${ACCELERATED_CONFIG}.bak > ${ACCELERATED_CONFIG}
-    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${GOOGLE_CONFIG}.bak > ${GOOGLE_CONFIG}
-    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${APPLE_CONFIG}.bak > ${APPLE_CONFIG}
+    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${ACCELERATED_CONFIG}.bak >${ACCELERATED_CONFIG}
+    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${GOOGLE_CONFIG}.bak >${GOOGLE_CONFIG}
+    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${APPLE_CONFIG}.bak >${APPLE_CONFIG}
 
     user_domain_name_whitelist=${SS_MERLIN_HOME}/rules/user_domain_name_whitelist.txt
     user_domain_name_blocklist=${SS_MERLIN_HOME}/rules/user_domain_name_blocklist.txt
@@ -71,27 +69,27 @@ start_proxy() {
 
     OLDIFS="$IFS" && IFS=$'\n'
     if [[ -f ${user_domain_name_whitelist} ]]; then
-      rm -f ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf 2> /dev/null
+      rm -f ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf 2>/dev/null
       for i in $(cat ${user_domain_name_whitelist} | grep -v '^#'); do
-        echo "server=/${i}/${china_dns_ip}" >> ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf
-        echo "ipset=/${i}/userwhitelist" >> ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf
+        echo "server=/${i}/${china_dns_ip}" >>${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf
+        echo "ipset=/${i}/userwhitelist" >>${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf
       done
     fi
 
     if [[ -f ${user_domain_name_blocklist} ]]; then
-      rm -f ${DNSMASQ_CONFIG_DIR}/user-blocklist-domains.conf 2> /dev/null
+      rm -f ${DNSMASQ_CONFIG_DIR}/user-blocklist-domains.conf 2>/dev/null
       for i in $(cat ${user_domain_name_blocklist} | grep -v '^#'); do
-        echo "address=/${i}/127.0.0.1" >> ${DNSMASQ_CONFIG_DIR}/user-blocklist-domains.conf
+        echo "address=/${i}/127.0.0.1" >>${DNSMASQ_CONFIG_DIR}/user-blocklist-domains.conf
       done
     fi
 
     if [[ -f ${user_domain_name_gfwlist} ]]; then
-      rm -f ${DNSMASQ_CONFIG_DIR}/user-gfwlist-domains.conf 2> /dev/null
+      rm -f ${DNSMASQ_CONFIG_DIR}/user-gfwlist-domains.conf 2>/dev/null
       for i in $(cat ${user_domain_name_gfwlist} | grep -v '^#'); do
         sed -i "/server=\/${i}\/.*/d" ${ACCELERATED_CONFIG}
         sed -i "/server=\/${i}\/.*/d" ${GOOGLE_CONFIG}
         sed -i "/server=\/${i}\/.*/d" ${APPLE_CONFIG}
-        echo "ipset=/${i}/usergfwlist" >> ${DNSMASQ_CONFIG_DIR}/user-gfwlist-domains.conf
+        echo "ipset=/${i}/usergfwlist" >>${DNSMASQ_CONFIG_DIR}/user-gfwlist-domains.conf
       done
     fi
     IFS=${OLDIFS}
@@ -107,11 +105,11 @@ start_proxy() {
 
   echo -e "$ansi_green Creating post-mount task... $ansi_std"
   if [[ ! -f /jffs/scripts/post-mount ]]; then
-    echo "#!/bin/sh" > /jffs/scripts/post-mount
+    echo "#!/bin/sh" >/jffs/scripts/post-mount
     chmod +x /jffs/scripts/post-mount
   fi
   if ! grep -qs "^ss-merlin start$" /jffs/scripts/post-mount; then
-    echo "ss-merlin start" >> /jffs/scripts/post-mount
+    echo "ss-merlin start" >>/jffs/scripts/post-mount
   fi
 
   echo "Applying iptables rules..."
@@ -122,7 +120,7 @@ start_proxy() {
 
   echo "Updating dnsmasq configuration file..."
   if ! grep -qs "^conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf$" /jffs/configs/dnsmasq.conf.add; then
-      echo "conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,*.conf" >> /jffs/configs/dnsmasq.conf.add
+    echo "conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,*.conf" >>/jffs/configs/dnsmasq.conf.add
   fi
   service restart_dnsmasq
 

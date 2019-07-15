@@ -3,20 +3,20 @@
 install() {
   set -e
 
-  ansi_red="\033[1;31m";
-  ansi_green="\033[1;32m";
-  ansi_yellow="\033[1;33m";
-  ansi_std="\033[m";
+  ansi_red="\033[1;31m"
+  ansi_green="\033[1;32m"
+  ansi_yellow="\033[1;33m"
+  ansi_std="\033[m"
 
   SS_MERLIN_HOME=/opt/share/ss-merlin
 
   echo -e "$ansi_green Checking installation environment... $ansi_std"
-  if ! git --version 2> /dev/null; then
+  if ! git --version 2>/dev/null; then
     echo -e "$ansi_red Error: git is not installed, please install git first! $ansi_std"
     exit 1
   fi
 
-  if ! opkg --version 2> /dev/null; then
+  if ! opkg --version 2>/dev/null; then
     echo -e "$ansi_red Error: opkg is not found, please install Entware first! $ansi_std"
     exit 1
   fi
@@ -68,7 +68,7 @@ install() {
 
   set +e
   # Remove default unbound start script
-  rm -f /opt/etc/init.d/S61unbound 2> /dev/null
+  rm -f /opt/etc/init.d/S61unbound 2>/dev/null
 
   echo -e "$ansi_green Creating automatic upgrade cron jobs... $ansi_std"
   cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"

@@ -37,15 +37,15 @@ uninstall() {
   rm -f /opt/bin/v2ray-plugin
 
   echo -e "$ansi_green Cleaning dnsmasq configuration file... $ansi_std"
-  sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2> /dev/null
+  sed -i "\#conf-dir=${SS_MERLIN_HOME}/etc/dnsmasq.d/,\*\.conf#d" /jffs/configs/dnsmasq.conf.add 2>/dev/null
   service restart_dnsmasq
 
   echo -e "$ansi_green Removing user scripts... $ansi_std"
-  sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2> /dev/null
+  sed -i "/ss-merlin start/d" /jffs/scripts/post-mount 2>/dev/null
 
   echo -e "$ansi_green Deleting shadowsocks-ausuwrt-merlin... $ansi_std"
   rm -rf ${SS_MERLIN_HOME}
-  rm -f /tmp/ss-merlin-is-run 2> /dev/null
+  rm -f /tmp/ss-merlin-is-run 2>/dev/null
 
   echo -e "$ansi_green Thanks for using shadowsocks-ausuwrt-merlin. It's been removed. $ansi_std"
 }
