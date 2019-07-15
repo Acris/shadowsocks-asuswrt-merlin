@@ -92,6 +92,7 @@ if iptables -t nat -N SHADOWSOCKS_TCP 2> /dev/null; then
   iptables -t nat -A PREROUTING -j SS_PREROUTING
   iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set localips dst -j RETURN
   iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set whitelist dst -j RETURN
+  iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set userwhitelist dst -j RETURN
   if [[ ${mode} -eq 1 ]]; then
     iptables -t nat -A SHADOWSOCKS_TCP -m set --match-set chinaips dst -j RETURN
   fi
@@ -117,6 +118,7 @@ if [[ ${udp} -eq 1 ]]; then
     iptables -t mangle -A PREROUTING -j SS_PREROUTING
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set localips dst -j RETURN
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set whitelist dst -j RETURN
+    iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set userwhitelist dst -j RETURN
     if [[ ${mode} -eq 1 ]]; then
       iptables -t mangle -A SHADOWSOCKS_UDP -p udp -m set --match-set chinaips dst -j RETURN
     fi

@@ -71,16 +71,17 @@ start_proxy() {
 
     OLDIFS="$IFS" && IFS=$'\n'
     if [[ -f ${user_domain_name_whitelist} ]]; then
-      rm -f ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
+      rm -f ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf 2> /dev/null
       for i in $(cat ${user_domain_name_whitelist} | grep -v '^#'); do
-        echo "server=/${i}/${china_dns_ip}" >> ${DNSMASQ_CONFIG_DIR}/whitelist-domains.china.conf
+        echo "server=/${i}/${china_dns_ip}" >> ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf
+        echo "ipset=/${i}/userwhitelist" >> ${DNSMASQ_CONFIG_DIR}/user-whitelist-domains.conf
       done
     fi
 
     if [[ -f ${user_domain_name_blocklist} ]]; then
-      rm -f ${DNSMASQ_CONFIG_DIR}/blocklist-domains.china.conf
+      rm -f ${DNSMASQ_CONFIG_DIR}/user-blocklist-domains.conf 2> /dev/null
       for i in $(cat ${user_domain_name_blocklist} | grep -v '^#'); do
-        echo "address=/${i}/127.0.0.1" >> ${DNSMASQ_CONFIG_DIR}/blocklist-domains.china.conf
+        echo "address=/${i}/127.0.0.1" >> ${DNSMASQ_CONFIG_DIR}/user-blocklist-domains.conf
       done
     fi
 
