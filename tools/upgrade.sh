@@ -27,13 +27,6 @@ upgrade() {
       ss-merlin restart
     fi
 
-    # Statistics
-    cd ${SS_MERLIN_HOME}
-    branch=$(git rev-parse --abbrev-ref HEAD)
-    hash=$(git rev-parse --short HEAD)
-    mac=$(cat /sys/class/net/eth0/address)
-    wget --quiet --method POST --output-document - "https://ss-merlin.iloli.li/stats?version=${branch}_${hash}&mac=${mac}"
-
     echo -e "$ansi_green"
     echo "   ______           __                        __       "
     echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ "

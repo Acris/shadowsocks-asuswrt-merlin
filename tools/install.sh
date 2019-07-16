@@ -72,6 +72,7 @@ install() {
 
   echo -e "$ansi_green Creating automatic upgrade cron jobs... $ansi_std"
   cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
+  cru a statistics "45 6 * * *" "$SS_MERLIN_HOME/tools/statistics.sh"
 
   echo -e "$ansi_green"
   echo "   ______           __                        __       "

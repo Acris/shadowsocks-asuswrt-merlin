@@ -102,6 +102,7 @@ start_proxy() {
   cru a update-dns-whitelist "15 3 * * *" "$SS_MERLIN_HOME/scripts/update_dns_whitelist.sh"
   cru a update-gfwlist "15 4 * * *" "$SS_MERLIN_HOME/scripts/update_gfwlist.sh"
   cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
+  cru a statistics "45 6 * * *" "$SS_MERLIN_HOME/tools/statistics.sh"
 
   echo -e "$ansi_green Creating post-mount task... $ansi_std"
   if [[ ! -f /jffs/scripts/post-mount ]]; then

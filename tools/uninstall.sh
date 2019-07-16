@@ -27,6 +27,7 @@ uninstall() {
   cru d update-dns-whitelist
   cru d update-gfwlist
   cru d upgrade-ss-merlin
+  cru d statistics
 
   echo -e "$ansi_green Removing packages... $ansi_std"
   opkg remove --autoremove unbound haveged
