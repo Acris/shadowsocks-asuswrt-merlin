@@ -61,6 +61,10 @@ cp ss-merlin.sample.conf ss-merlin.conf
 vi ss-merlin.conf
 ```
 
+Configure which LAN IP will pass transparent proxy by edit `lan_ips`, you can assign a LAN IP like 192.169.1.125 means only this device can pass transparent proxy.
+
+And you can change the default DNS server for Chinese IPs by modifying `china_dns_ip`.
+
 Then, start the service:
 ```sh
 # Start the service
