@@ -7,8 +7,8 @@ ACCELERATED_CONFIG=${DNSMASQ_CONFIG_DIR}/accelerated-domains.china.conf
 GOOGLE_CONFIG=${DNSMASQ_CONFIG_DIR}/google.china.conf
 APPLE_CONFIG=${DNSMASQ_CONFIG_DIR}/apple.china.conf
 
-if [[ ! -f ${SS_MERLIN_HOME}/etc/shadowsocks/config.json ]]; then
-  cp ${SS_MERLIN_HOME}/etc/shadowsocks/config.sample.json ${SS_MERLIN_HOME}/etc/shadowsocks/config.json
+if [[ ! -f ${SS_MERLIN_HOME}/etc/ss-merlin.conf ]]; then
+  cp ${SS_MERLIN_HOME}/etc/ss-merlin.sample.conf ${SS_MERLIN_HOME}/etc/ss-merlin.conf
 fi
 . ${SS_MERLIN_HOME}/etc/ss-merlin.conf
 
