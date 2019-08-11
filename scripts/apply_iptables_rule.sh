@@ -3,14 +3,6 @@
 SS_MERLIN_HOME=/opt/share/ss-merlin
 DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
 
-if [[ ! -f ${SS_MERLIN_HOME}/etc/ss-merlin.conf ]]; then
-  cp ${SS_MERLIN_HOME}/etc/ss-merlin.sample.conf ${SS_MERLIN_HOME}/etc/ss-merlin.conf
-fi
-if [[ ! -f ${SS_MERLIN_HOME}/etc/shadowsocks/config.json ]]; then
-  cp ${SS_MERLIN_HOME}/etc/shadowsocks/config.sample.json ${SS_MERLIN_HOME}/etc/shadowsocks/config.json
-fi
-. ${SS_MERLIN_HOME}/etc/ss-merlin.conf
-
 modprobe ip_set
 modprobe ip_set_hash_net
 modprobe ip_set_hash_ip
@@ -57,12 +49,14 @@ fi
 
 # Add whitelist
 if ipset create whitelist hash:ip 2>/dev/null; then
-  china_dns_ip=119.29.29.29
+  if [[ ! ${china_dns_ip} ]]; then
+    china_dns_ip=119.29.29.29
+  fi
   remote_server_address=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'server"' | cut -d ':' -f 2 | cut -d '"' -f 2)
   remote_server_ip=${remote_server_address}
   ISIP=$(echo ${remote_server_address} | grep -E '([0-9]{1,3}[\.]){3}[0-9]{1,3}|:')
   if [[ -z "$ISIP" ]]; then
-    echo "Resolving server IP address..."
+    echo "Resolving server IP address with DNS ${china_dns_ip}..."
     remote_server_ip=$(nslookup ${remote_server_address} ${china_dns_ip} | sed '1,4d' | awk '{print $3}' | grep -v : | awk 'NR==1{print}')
     echo "Server IP address is ${remote_server_ip}"
   fi
