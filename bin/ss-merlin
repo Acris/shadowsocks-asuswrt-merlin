@@ -66,9 +66,15 @@ start_proxy() {
       china_dns_ip=119.29.29.29
     fi
 
-    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${ACCELERATED_CONFIG}.bak >${ACCELERATED_CONFIG}
-    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${GOOGLE_CONFIG}.bak >${GOOGLE_CONFIG}
-    sed "s#114\.114\.114\.114#${china_dns_ip}#" ${APPLE_CONFIG}.bak >${APPLE_CONFIG}
+    if [[ -s ${ACCELERATED_CONFIG}.bak ]]; then
+      sed "s#114\.114\.114\.114#${china_dns_ip}#" ${ACCELERATED_CONFIG}.bak >${ACCELERATED_CONFIG}
+    fi
+    if [[ -s ${GOOGLE_CONFIG}.bak ]]; then
+      sed "s#114\.114\.114\.114#${china_dns_ip}#" ${GOOGLE_CONFIG}.bak >${GOOGLE_CONFIG}
+    fi
+    if [[ -s ${APPLE_CONFIG}.bak ]]; then
+      sed "s#114\.114\.114\.114#${china_dns_ip}#" ${APPLE_CONFIG}.bak >${APPLE_CONFIG}
+    fi
 
     user_domain_name_whitelist=${SS_MERLIN_HOME}/rules/user_domain_name_whitelist.txt
     user_domain_name_blocklist=${SS_MERLIN_HOME}/rules/user_domain_name_blocklist.txt

@@ -19,8 +19,10 @@ modprobe xt_set
 if [[ ${mode} -eq 0 ]]; then
   # Add GFW list to gfwlist ipset for GFW list mode
   if ipset create gfwlist hash:ip 2>/dev/null; then
-    rm -f ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf 2>/dev/null
-    cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
+    if [[ -s ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ]]; then
+      rm -f ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf 2>/dev/null
+      cp ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf.bak ${DNSMASQ_CONFIG_DIR}/dnsmasq_gfwlist_ipset.conf
+    fi
   fi
 elif [[ ${mode} -eq 1 ]]; then
   # Add China IP to chinaips ipset for Bypass mainland China mode
@@ -30,6 +32,10 @@ elif [[ ${mode} -eq 1 ]]; then
       count=$(ipset list chinaips | wc -l)
       if [[ "$count" -lt "8000" ]]; then
         echo "Applying China ipset rule, it maybe take several minute to finish..."
+        if [[ -s ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt.bak ]]; then
+          rm -f ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt 2>/dev/null
+          cp ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt.bak ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt
+        fi
         for ip in $(cat ${SS_MERLIN_HOME}/rules/chinadns_chnroute.txt | grep -v '^#'); do
           ipset add chinaips ${ip}
         done
