@@ -3,6 +3,14 @@
 SS_MERLIN_HOME=/opt/share/ss-merlin
 DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d
 
+if [[ ! -f ${SS_MERLIN_HOME}/etc/ss-merlin.conf ]]; then
+  cp ${SS_MERLIN_HOME}/etc/ss-merlin.sample.conf ${SS_MERLIN_HOME}/etc/ss-merlin.conf
+fi
+if [[ ! -f ${SS_MERLIN_HOME}/etc/shadowsocks/config.json ]]; then
+  cp ${SS_MERLIN_HOME}/etc/shadowsocks/config.sample.json ${SS_MERLIN_HOME}/etc/shadowsocks/config.json
+fi
+. ${SS_MERLIN_HOME}/etc/ss-merlin.conf
+
 modprobe ip_set
 modprobe ip_set_hash_net
 modprobe ip_set_hash_ip
