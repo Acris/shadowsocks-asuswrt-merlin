@@ -147,9 +147,9 @@ if [[ ${udp} -eq 1 ]]; then
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -s ${lan_ips} -m set --match-set usergfwlist dst -j MARK --set-mark 0x2333
     # Apply for udp
     iptables -t mangle -A SS_OUTPUT -p udp -j SHADOWSOCKS_UDP
-    iptables -t mangle -A SS_PREROUTING -p udp--dport 53 -m mark ! --mark 0x2333 -j ACCEPT
-    iptables -t mangle -A SS_PREROUTING -p udp-m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
-    iptables -t mangle -A SS_PREROUTING -p udp-m mark --mark 0x2333 -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
+    iptables -t mangle -A SS_PREROUTING -p udp --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
+    iptables -t mangle -A SS_PREROUTING -p udp -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
+    iptables -t mangle -A SS_PREROUTING -p udp -m mark --mark 0x2333 -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
   fi
 fi
 
