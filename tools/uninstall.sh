@@ -30,7 +30,7 @@ uninstall() {
   cru d statistics
 
   echo -e "$ansi_green Removing packages... $ansi_std"
-  opkg remove --autoremove unbound haveged
+  opkg remove --autoremove unbound-daemon haveged
 
   echo -e "$ansi_green Deleting system links... $ansi_std"
   rm -f /opt/bin/ss-merlin
