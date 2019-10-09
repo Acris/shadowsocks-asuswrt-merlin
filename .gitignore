@@ -5,3 +5,4 @@ etc/shadowsocks/config.json
 etc/ss-merlin.conf
 rules/
 !rules/localips
+tools/do_upgrade.sh
