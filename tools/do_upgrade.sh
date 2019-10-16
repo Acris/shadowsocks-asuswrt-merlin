@@ -10,9 +10,10 @@ echo -e "$ansi_green Executing pre-upgrade commands... $ansi_std"
 opkg update
 opkg remove --autoremove unbound
 opkg install unbound-daemon
-git checkout ${SS_MERLIN_HOME}/bin/*
-git checkout ${SS_MERLIN_HOME}/scripts/*.sh
-git checkout ${SS_MERLIN_HOME}/tools/*.sh
+cd ${SS_MERLIN_HOME}
+git checkout bin/*
+git checkout scripts/*.sh
+git checkout tools/*.sh
 
 echo -e "$ansi_green Updating source code... $ansi_std"
 cd ${SS_MERLIN_HOME}
