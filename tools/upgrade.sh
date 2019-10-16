@@ -5,9 +5,9 @@ upgrade() {
 
   rm -f ${SS_MERLIN_HOME}/tools/do_upgrade.sh
 
-  wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/master/tools/do_upgrade.sh -O ${SS_MERLIN_HOME}/tools/do_upgrade.sh
+  wget https://ss-merlin.iloli.li/proxy-github-raw/Acris/shadowsocks-asuswrt-merlin/master/tools/do_upgrade.sh -O ${SS_MERLIN_HOME}/tools/do_upgrade.sh
 
-  sh ${SS_MERLIN_HOME}/tools/do_upgrade.sh
+  ${SS_MERLIN_HOME}/tools/do_upgrade.sh
 }
 
 upgrade
