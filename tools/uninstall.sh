@@ -14,12 +14,6 @@ uninstall() {
     exit
   fi
 
-  echo -e "$ansi_green Stopping all services... $ansi_std"
-  ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
-
-  echo -e "$ansi_green Cleaning iptables rules... $ansi_std"
-  ${SS_MERLIN_HOME}/scripts/clean_iptables_rule.sh
-
   echo -e "$ansi_green Deleting cron jobs... $ansi_std"
   cru d check-services-alive
   cru d check-iptables-rule
@@ -28,6 +22,12 @@ uninstall() {
   cru d update-gfwlist
   cru d upgrade-ss-merlin
   cru d statistics
+
+  echo -e "$ansi_green Stopping all services... $ansi_std"
+  ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
+
+  echo -e "$ansi_green Cleaning iptables rules... $ansi_std"
+  ${SS_MERLIN_HOME}/scripts/clean_iptables_rule.sh
 
   echo -e "$ansi_green Removing packages... $ansi_std"
   opkg remove --autoremove unbound-daemon haveged
