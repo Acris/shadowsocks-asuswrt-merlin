@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 SS_MERLIN_HOME=/opt/share/ss-merlin
 DNSMASQ_CONFIG_DIR=${SS_MERLIN_HOME}/etc/dnsmasq.d

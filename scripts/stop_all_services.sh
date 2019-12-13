@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 # Kill all services
 killall ss-redir 2>/dev/null

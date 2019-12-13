@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 update_dns_whitelist() {
   SS_MERLIN_HOME=/opt/share/ss-merlin

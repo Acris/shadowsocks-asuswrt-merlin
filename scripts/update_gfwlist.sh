@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 update_gfwlist() {
   SS_MERLIN_HOME=/opt/share/ss-merlin

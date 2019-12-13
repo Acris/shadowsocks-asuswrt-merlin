@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 SS_MERLIN_HOME=/opt/share/ss-merlin
 
@@ -110,7 +110,7 @@ start_proxy() {
 
   echo -e "$ansi_green Creating post-mount task... $ansi_std"
   if [[ ! -f /jffs/scripts/post-mount ]]; then
-    echo "#!/bin/sh" >/jffs/scripts/post-mount
+    echo "#!/bin/ash" >/jffs/scripts/post-mount
     chmod +x /jffs/scripts/post-mount
   fi
   if ! grep -qs "^ss-merlin start$" /jffs/scripts/post-mount; then

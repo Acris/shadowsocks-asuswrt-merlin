@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 
 # delete related rules
 iptables -t mangle -D OUTPUT -j SS_OUTPUT 2>/dev/null
