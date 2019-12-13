@@ -21,7 +21,6 @@ uninstall() {
   cru d update-dns-whitelist
   cru d update-gfwlist
   cru d upgrade-ss-merlin
-  cru d statistics
 
   echo -e "$ansi_green Stopping all services... $ansi_std"
   ${SS_MERLIN_HOME}/scripts/stop_all_services.sh
