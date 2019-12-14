@@ -5,7 +5,7 @@ shadowsocks-asuswrt-merlin will install `shadowsocks-libev` and `v2ray-plugin` o
 For server side set up, you can easily install shadowsocks server and v2ray-plugin with docker by [https://github.com/Acris/docker-shadowsocks-libev](https://github.com/Acris/docker-shadowsocks-libev).
 
 ## Important notice
-**Due to an automatic upgrade issue, for users whose shadowsocks-asuswrt-merlin version is before 2019/08/11, please uninstall it by `ss-merlin uninstall` and reinstall it again.**
+**Due to an automatic upgrade issue, for users whose shadowsocks-asuswrt-merlin version is before 2019/12/14, please uninstall it by `ss-merlin uninstall` and reinstall it again.**
 
 ## Getting Started
 
