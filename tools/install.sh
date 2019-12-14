@@ -77,7 +77,7 @@ install() {
   echo "   ______           __                        __       "
   echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ "
   echo " _\ \/ _ \/ _ \`/ _  / _ \ |/|/ (_-</ _ \/ __/  '_/(_-<"
-  echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/ "
+  echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/  for Asuswrt-Merlin"
   echo "                                   ...is now installed!"
   echo -e "$ansi_std"
   echo -e "$ansi_yellow Copy and edit your shadowsocks configuration file at: /opt/share/ss-merlin/etc/shadowsocks/config.sample.json $ansi_std"

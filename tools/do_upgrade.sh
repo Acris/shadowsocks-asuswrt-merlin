@@ -39,7 +39,7 @@ if git pull; then
   echo "   ______           __                        __       "
   echo "  / __/ /  ___ ____/ /__ _    _____ ___  ____/ /__ ___ "
   echo " _\ \/ _ \/ _ \`/ _  / _ \ |/|/ (_-</ _ \/ __/  '_/(_-<"
-  echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/ "
+  echo "/___/_//_/\_,_/\_,_/\___/__,__/___/\___/\__/_/\_\/___/  for Asuswrt-Merlin"
   echo "   ..has been updated and/or is at the current version!"
   echo -e "$ansi_std"
   echo "Give us a feedback at https://github.com/Acris/shadowsocks-asuswrt-merlin."
