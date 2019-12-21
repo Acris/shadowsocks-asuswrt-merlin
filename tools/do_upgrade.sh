@@ -7,13 +7,13 @@ ansi_green="\033[1;32m"
 ansi_std="\033[m"
 
 echo -e "$ansi_green Executing pre-upgrade commands... $ansi_std"
-cd ${SS_MERLIN_HOME}
+cd ${SS_MERLIN_HOME} || exit
 git checkout bin/*
 git checkout scripts/*.sh
 git checkout tools/*.sh
 
 echo -e "$ansi_green Updating source code... $ansi_std"
-cd ${SS_MERLIN_HOME}
+cd ${SS_MERLIN_HOME} || exit
 if git pull; then
   echo -e "$ansi_green Giving execute permissions... $ansi_std"
   chmod +x ${SS_MERLIN_HOME}/bin/*
