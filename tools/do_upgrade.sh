@@ -7,9 +7,6 @@ ansi_green="\033[1;32m"
 ansi_std="\033[m"
 
 echo -e "$ansi_green Executing pre-upgrade commands... $ansi_std"
-opkg update
-opkg remove --autoremove unbound
-opkg install unbound-daemon
 cd ${SS_MERLIN_HOME}
 git checkout bin/*
 git checkout scripts/*.sh
