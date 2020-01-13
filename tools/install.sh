@@ -72,6 +72,7 @@ install() {
 
   # Remove default configutation files
   rm -rf /opt/etc/shadowsocks 2>/dev/null
+  rm -rf /opt/etc/unbound/ 2>/dev/null
 
   echo -e "$ansi_green Creating automatic upgrade cron jobs... $ansi_std"
   cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
