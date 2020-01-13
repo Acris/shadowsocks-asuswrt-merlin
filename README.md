@@ -1,11 +1,11 @@
 # Shadowsocks for Asuswrt-Merlin New Gen
 
-shadowsocks-asuswrt-merlin will install `shadowsocks-libev` and `v2ray-plugin` on your Asuswrt-Merlin New Gen(version 382.xx and higher) based router, tested on NETGEAR R7000 and ASUS RT-AC86U. The binary of shadowocks-libev is build on Linux environment with https://gist.github.com/Acris/60abe3f1a17567a7986000745fbe2742.
+shadowsocks-asuswrt-merlin will install `shadowsocks-libev` and `v2ray-plugin` on your Asuswrt-Merlin New Gen(version 382.xx and higher) based router, tested on NETGEAR R7000 and ASUS RT-AC86U.
 
 For server side set up, you can easily install shadowsocks server and v2ray-plugin with docker by [https://github.com/Acris/docker-shadowsocks-libev](https://github.com/Acris/docker-shadowsocks-libev).
 
 ## Important notice
-**Due to an automatic upgrade issue, for users whose shadowsocks-asuswrt-merlin version is before 2019/12/14, please uninstall it by `ss-merlin uninstall` and reinstall it again.**
+**Due to an automatic upgrade issue, for users whose shadowsocks-asuswrt-merlin version is before 2020/01/13, please uninstall it by `ss-merlin uninstall` and reinstall it again.**
 
 ## Getting Started
 
@@ -27,11 +27,7 @@ opkg install ca-certificates git-http wget
 ### Installation
 shadowsocks-asuswrt-merlin is installed by running the following commands in your terminal:
 ```sh
-# For Broadcom SDK6/SDK7 ARM platform (RT-AC56 upto RT-AC5300)
 sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/master/tools/install.sh -O -)"
-
-# For Broadcom HND ARM platform (RT-AC86U) and HND AX ARM (RT-AX88U)
-sh -c "$(wget https://raw.githubusercontent.com/Acris/shadowsocks-asuswrt-merlin/hnd/tools/install.sh -O -)"
 ```
 
 ### Configuration

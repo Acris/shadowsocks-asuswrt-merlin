@@ -27,11 +27,10 @@ uninstall() {
   ${SS_MERLIN_HOME}/scripts/clean_iptables_rule.sh
 
   echo -e "$ansi_green Removing packages... $ansi_std"
-  opkg remove --autoremove unbound-daemon haveged
+  opkg remove --autoremove shadowsocks-libev-ss-redir unbound-daemon haveged
 
   echo -e "$ansi_green Deleting system links... $ansi_std"
   rm -f /opt/bin/ss-merlin
-  rm -f /opt/bin/ss-redir
   rm -f /opt/bin/v2ray-plugin
 
   echo -e "$ansi_green Cleaning dnsmasq configuration file... $ansi_std"

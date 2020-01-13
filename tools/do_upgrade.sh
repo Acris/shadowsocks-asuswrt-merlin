@@ -20,9 +20,6 @@ if git pull; then
   chmod +x ${SS_MERLIN_HOME}/scripts/*.sh
   chmod +x ${SS_MERLIN_HOME}/tools/*.sh
 
-  echo -e "$ansi_green Executing post upgrade scripts... $ansi_std"
-  ${SS_MERLIN_HOME}/tools/post_upgrade.sh
-
   echo -e "$ansi_green Upgrading packages... $ansi_std"
   opkg update
   opkg upgrade

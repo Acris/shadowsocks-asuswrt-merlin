@@ -28,14 +28,14 @@ install() {
 
   if [[ -d "$SS_MERLIN_HOME" ]]; then
     echo -e "$ansi_yellow You already have shadowsocks-asuswrt-merlin installed. $ansi_std"
-    echo -e "$ansi_yellow You'll need to remove $SS_MERLIN_HOME if you want to re-install. $ansi_std"
+    echo -e "$ansi_yellow You'll need to delete $SS_MERLIN_HOME if you want to re-install. $ansi_std"
     exit 1
   fi
 
   echo -e "$ansi_green Installing required packages... $ansi_std"
   opkg update
   opkg upgrade
-  opkg install haveged unbound-daemon ipset iptables
+  opkg install shadowsocks-libev-ss-redir haveged unbound-daemon ipset iptables
   /opt/etc/init.d/S02haveged start
 
   echo -e "$ansi_green Cloning shadowsocks-asuswrt-merlin... $ansi_std"
@@ -58,7 +58,6 @@ install() {
 
   echo -e "$ansi_green Creating system links... $ansi_std"
   ln -sf ${SS_MERLIN_HOME}/bin/ss-merlin /opt/bin/ss-merlin
-  ln -sf ${SS_MERLIN_HOME}/bin/ss-redir /opt/bin/ss-redir
   ln -sf ${SS_MERLIN_HOME}/bin/v2ray-plugin /opt/bin/v2ray-plugin
 
   echo -e "$ansi_green Creating dnsmasq config file... $ansi_std"
@@ -67,8 +66,12 @@ install() {
   fi
 
   set +e
-  # Remove default unbound start script
+  # Remove default start script
+  rm -f /opt/etc/init.d/S22shadowsocks 2>/dev/null
   rm -f /opt/etc/init.d/S61unbound 2>/dev/null
+
+  # Remove default configutation files
+  rm -rf /opt/etc/shadowsocks 2>/dev/null
 
   echo -e "$ansi_green Creating automatic upgrade cron jobs... $ansi_std"
   cru a upgrade-ss-merlin "20 6 * * *" "$SS_MERLIN_HOME/tools/upgrade.sh"
