@@ -97,8 +97,8 @@ fi
 
 local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'local_port' | cut -d ':' -f 2 | grep -o '[0-9]*')
 
-if [[ ! ${lan_ips} ]]; then
-  lan_ips=0.0.0.0/0
+if [[ ! ${lan_ips} || ${lan_ips} == '0.0.0.0/0' ]]; then
+  lan_ips=192.168.0.0/0
 fi
 if iptables -t nat -N SHADOWSOCKS_TCP 2>/dev/null; then
   # TCP rules
@@ -120,7 +120,7 @@ if iptables -t nat -N SHADOWSOCKS_TCP 2>/dev/null; then
   iptables -t nat -A SHADOWSOCKS_TCP -p tcp -s ${lan_ips} -m set --match-set usergfwlist dst -j REDIRECT --to-ports ${local_redir_port}
   # Apply TCP rules
   iptables -t nat -A SS_OUTPUT -p tcp -j SHADOWSOCKS_TCP
-  iptables -t nat -A SS_PREROUTING -p tcp -s 192.168.0.0/16 -j SHADOWSOCKS_TCP
+  iptables -t nat -A SS_PREROUTING -p tcp -s ${lan_ips} -j SHADOWSOCKS_TCP
 fi
 
 if [[ ${udp} -eq 1 ]]; then
@@ -147,9 +147,9 @@ if [[ ${udp} -eq 1 ]]; then
     iptables -t mangle -A SHADOWSOCKS_UDP -p udp -s ${lan_ips} -m set --match-set usergfwlist dst -j MARK --set-mark 0x2333
     # Apply for udp
     iptables -t mangle -A SS_OUTPUT -p udp -j SHADOWSOCKS_UDP
-    iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
-    iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
-    iptables -t mangle -A SS_PREROUTING -p udp -s 192.168.0.0/16 -m mark --mark 0x2333 -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
+    iptables -t mangle -A SS_PREROUTING -p udp -s ${lan_ips} --dport 53 -m mark ! --mark 0x2333 -j ACCEPT
+    iptables -t mangle -A SS_PREROUTING -p udp -s ${lan_ips} -m mark ! --mark 0x2333 -j SHADOWSOCKS_UDP
+    iptables -t mangle -A SS_PREROUTING -p udp -s ${lan_ips} -m mark --mark 0x2333 -j TPROXY --on-ip 127.0.0.1 --on-port ${local_redir_port}
   fi
 fi
 
