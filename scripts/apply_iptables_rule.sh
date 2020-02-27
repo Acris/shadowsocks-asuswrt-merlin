@@ -32,7 +32,7 @@ get_lan_subnet() {
 
   _lan_ipaddr="${_lan_ipaddr%.*}.0"
 
-  echo $_lan_ipaddr/$(mask2cdr $_lan_netmask)
+  echo "$_lan_ipaddr"/$(mask2cdr "$_lan_netmask")
 }
 
 modprobe ip_set
@@ -124,6 +124,8 @@ local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'loc
 if [[ ! ${lan_ips} || ${lan_ips} == '0.0.0.0/0' ]]; then
   lan_ips=$(get_lan_subnet)
 fi
+echo "LAN IPs are ${lan_ips}"
+
 if iptables -t nat -N SHADOWSOCKS_TCP 2>/dev/null; then
   # TCP rules
   iptables -t nat -N SS_OUTPUT
