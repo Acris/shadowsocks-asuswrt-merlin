@@ -9,13 +9,6 @@ ansi_std="\033[m"
 echo -e "$ansi_green Executing pre-upgrade commands... $ansi_std"
 
 # Pre-upgrade commands start
-opkg update
-opkg install shadowsocks-libev-ss-redir
-rm -f /opt/etc/init.d/S22shadowsocks 2>/dev/null
-rm -f /opt/etc/init.d/S22shadowsocks 2>/dev/null
-rm -rf /opt/etc/shadowsocks 2>/dev/null
-rm -rf /opt/etc/unbound/ 2>/dev/null
-
 cd ${SS_MERLIN_HOME} || exit
 git checkout bin/*
 git checkout scripts/*.sh
