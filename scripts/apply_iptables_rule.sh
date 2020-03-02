@@ -27,6 +27,10 @@ modprobe ip_set_hash_net
 modprobe ip_set_hash_ip
 modprobe xt_set
 
+# Create ipset for user domain name whitelist and user domain name gfwlist
+ipset create userwhitelist hash:net 2>/dev/null
+ipset create usergfwlist hash:net 2>/dev/null
+
 if [[ ${mode} -eq 0 ]]; then
   # Add GFW list to gfwlist ipset for GFW list mode
   if ipset create gfwlist hash:ip 2>/dev/null; then
@@ -55,10 +59,6 @@ elif [[ ${mode} -eq 1 ]]; then
     IFS=${OLDIFS}
   fi
 fi
-
-# Create ipset for user domain name whitelist and user domain name gfwlist
-ipset create userwhitelist hash:ip 2>/dev/null
-ipset create usergfwlist hash:ip 2>/dev/null
 
 # Add intranet IP to localips ipset for Bypass LAN
 if ipset create localips hash:net 2>/dev/null; then
@@ -95,15 +95,22 @@ if ipset create whitelist hash:ip 2>/dev/null; then
     # Add rubyfush DNS server
     ipset add whitelist 118.89.110.78
     ipset add whitelist 47.96.179.163
-
-    # Add user_ip_whitelist.txt
-    if [[ -e ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt ]]; then
-      for ip in $(cat ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt | grep -v '^#'); do
-        ipset add whitelist ${ip}
-      done
-    fi
   fi
   IFS=${OLDIFS}
+fi
+
+# Add user_ip_whitelist.txt
+if [[ -e ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt ]]; then
+  for ip in $(cat ${SS_MERLIN_HOME}/rules/user_ip_whitelist.txt | grep -v '^#'); do
+    ipset add userwhitelist ${ip}
+  done
+fi
+
+# Add user_ip_gfwlist.txt
+if [[ -e ${SS_MERLIN_HOME}/rules/user_ip_gfwlist.txt ]]; then
+  for ip in $(cat ${SS_MERLIN_HOME}/rules/user_ip_gfwlist.txt | grep -v '^#'); do
+    ipset add usergfwlist ${ip}
+  done
 fi
 
 local_redir_port=$(cat ${SS_MERLIN_HOME}/etc/shadowsocks/config.json | grep 'local_port' | cut -d ':' -f 2 | grep -o '[0-9]*')
