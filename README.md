@@ -91,6 +91,10 @@ vi /opt/share/ss-merlin/rules/user_domain_name_whitelist.txt
 ## You can add IP address to this file if you need the IP bypass proxy.
 vi /opt/share/ss-merlin/rules/user_ip_whitelist.txt
 
+# IP gfwlist
+## You can add IP address to this file if you want to force the IP pass proxy.
+vi /opt/share/ss-merlin/rules/user_ip_gfwlist.txt
+
 # Then, restart the service
 ss-merlin restart
 ```
@@ -107,7 +111,7 @@ Thanks for the following awesome projects ❤️
 - [gfwlist](https://github.com/gfwlist/gfwlist)
 - [gfwlist2dnsmasq](https://github.com/cokebar/gfwlist2dnsmasq)
 - [ss-tproxy](https://github.com/zfl9/ss-tproxy)
-- [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
+- [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - And many more.
 
 ## License
