@@ -13,6 +13,9 @@ cd ${SS_MERLIN_HOME} || exit
 git checkout bin/*
 git checkout scripts/*.sh
 git checkout tools/*.sh
+# Clean up
+rm -rf /opt/etc/shadowsocks 2>/dev/null
+rm -rf /opt/etc/unbound 2>/dev/null
 # Pre-upgrade commands end
 
 echo -e "$ansi_green Updating source code... $ansi_std"
