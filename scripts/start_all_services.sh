@@ -1,6 +1,11 @@
 #!/bin/ash
 
 SS_MERLIN_HOME=/opt/share/ss-merlin
+SHADOW_CONFIG_FILE=${SS_MERLIN_HOME}/etc/shadowsocks/config.json
+use_v2ray=0
+if [[ -f ${SHADOW_CONFIG_FILE} ]]; then
+   use_v2ray=$(grep -w "plugin" ${SHADOW_CONFIG_FILE}|grep "v2ray" -c)
+fi
 
 # Start if process not running
 ss_pid=$(pidof ss-redir)
@@ -11,10 +16,14 @@ if [[ -z "$ss_pid" ]]; then
   ss-redir -c ${SS_MERLIN_HOME}/etc/shadowsocks/config.json -f /opt/var/run/ss-redir.pid
 fi
 
+sleep 3
+
 v2ray_pid=$(pidof v2ray-plugin)
 if [[ -z "$v2ray_pid" ]]; then
-  killall ss-redir 2>/dev/null
-  ss-redir -c ${SS_MERLIN_HOME}/etc/shadowsocks/config.json -f /opt/var/run/ss-redir.pid
+  if [ $use_v2ray -ge 1 ];then 
+     killall ss-redir 2>/dev/null
+     ss-redir -c ${SS_MERLIN_HOME}/etc/shadowsocks/config.json -f /opt/var/run/ss-redir.pid
+  fi
 fi
 
 unbound_pid=$(pidof unbound)
