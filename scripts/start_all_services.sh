@@ -16,6 +16,8 @@ if [[ -z "$ss_pid" ]]; then
   ss-redir -c ${SS_MERLIN_HOME}/etc/shadowsocks/config.json -f /opt/var/run/ss-redir.pid
 fi
 
+sleep 3
+
 v2ray_pid=$(pidof v2ray-plugin)
 if [[ -z "$v2ray_pid" ]]; then
   if [ $use_v2ray -ge 1 ];then 
