@@ -112,7 +112,7 @@ Thanks for the following awesome projects ❤️
 - [gfwlist2dnsmasq](https://github.com/cokebar/gfwlist2dnsmasq)
 - [ss-tproxy](https://github.com/zfl9/ss-tproxy)
 - [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
-- And many more.
+- And much more.
 
 ## License
 ```
@@ -138,8 +138,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
-
-## Thanks
-<a href="https://www.jetbrains.com/?from=shadowsocks-asuswrt-merlin">
-  <img alt="JetBrains" src="https://raw.githubusercontent.com/Acris/Acris/master/jetbrains-logo.png" width="100">
-</a>
