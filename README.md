@@ -114,6 +114,11 @@ Thanks for the following awesome projects ❤️
 - [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
 - And much more.
 
+## Thanks
+<a href="https://www.jetbrains.com/?from=shadowsocks-asuswrt-merlin">
+  <img alt="JetBrains" src="https://cdn.reorz.com/images/2021/08/jetbrains-variant.png" width="100">
+</a>
+
 ## License
 ```
 The MIT License (MIT)
