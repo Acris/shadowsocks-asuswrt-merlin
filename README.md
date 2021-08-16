@@ -116,7 +116,7 @@ Thanks for the following awesome projects ❤️
 
 ## Thanks
 <a href="https://jb.gg/OpenSource?from=shadowsocks-asuswrt-merlin">
-  <img alt="JetBrains" src="https://cdn.reorz.com/images/2021/08/jetbrains-variant.png" width="100">
+  <img alt="JetBrains" src="https://www.jetbrains.com/company/brand/img/jetbrains_logo.png" width="100">
 </a>
 
 ## License
