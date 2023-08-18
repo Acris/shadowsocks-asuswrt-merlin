@@ -12,13 +12,13 @@ For server side set up, you can easily install shadowsocks server and v2ray-plug
 - JFFS partition should be enabled
 - ca-certificates should be installed for HTTPS support
 - git and git-http should be installed
-- wget should be installed
+- wget-ssl should be installed
 
 Make sure you have installed all prerequisites software and utils, you can install it by:
 ```sh
 opkg update
 opkg upgrade
-opkg install ca-certificates git-http wget
+opkg install ca-certificates git-http wget-ssl
 ```
 
 ### Installation
