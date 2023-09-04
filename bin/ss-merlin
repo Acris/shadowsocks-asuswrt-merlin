@@ -142,6 +142,16 @@ start_proxy() {
   echo -e "$ansi_green Started. $ansi_std"
 }
 
+status_proxy() {
+  set -e
+
+  if [[ -f /tmp/ss-merlin-is-run ]]; then
+    echo -e "$ansi_green Started $ansi_std"
+  else
+    echo -e "$ansi_red Stopped $ansi_std"
+  fi
+}
+
 restart_proxy() {
   stop_proxy
   start_proxy
@@ -153,10 +163,12 @@ elif [[ "$1" == 'start' ]]; then
   start_proxy
 elif [[ "$1" == 'restart' ]]; then
   restart_proxy
+elif [[ "$1" == 'status' ]]; then
+  status_proxy
 elif [[ "$1" == 'upgrade' ]]; then
   ${SS_MERLIN_HOME}/tools/upgrade.sh
 elif [[ "$1" == 'uninstall' ]]; then
   ${SS_MERLIN_HOME}/tools/uninstall.sh
 else
-  echo -e "$ansi_yellow Usage: ss-merlin start|stop|restart|upgrade|uninstall $ansi_std"
+  echo -e "$ansi_yellow Usage: ss-merlin start|stop|restart|status|upgrade|uninstall $ansi_std"
 fi
