@@ -70,7 +70,7 @@ ss-merlin start
 ### Usage
 ```sh
 admin@R7000:/tmp/home/root# ss-merlin 
- Usage: ss-merlin start|stop|restart|upgrade|uninstall
+ Usage: ss-merlin start|stop|restart|status|upgrade|uninstall
 ```
 
 ### Custom user rules
