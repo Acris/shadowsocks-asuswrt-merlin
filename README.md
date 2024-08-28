@@ -8,7 +8,7 @@ For server side set up, you can easily install shadowsocks server and v2ray-plug
 
 ### Prerequisites
 - Asuswrt-Merlin New Gen(version 382.xx and higher) based router
-- Entware **must** be installed, you can find installation documents on [https://github.com/RMerl/asuswrt-merlin/wiki/Entware](https://github.com/RMerl/asuswrt-merlin/wiki/Entware)
+- Entware **must** be installed, you can find installation documents on [https://github.com/RMerl/asuswrt-merlin.ng/wiki/Entware](https://github.com/RMerl/asuswrt-merlin.ng/wiki/Entware)
 - JFFS partition should be enabled
 - ca-certificates should be installed for HTTPS support
 - git and git-http should be installed
