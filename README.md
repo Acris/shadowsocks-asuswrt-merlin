@@ -24,7 +24,7 @@ opkg install ca-certificates git-http wget-ssl
 ### Installation
 shadowsocks-asuswrt-merlin is installed by running the following commands in your terminal:
 ```sh
-sh -c "$(wget https://cdn.jsdelivr.net/gh/Acris/shadowsocks-asuswrt-merlin@master/tools/install.sh -O -)"
+sh -c "$(wget https://fastly.jsdelivr.net/gh/Acris/shadowsocks-asuswrt-merlin@master/tools/install.sh -O -)"
 ```
 
 ### Configuration
